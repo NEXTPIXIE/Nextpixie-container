@@ -2,7 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.core.validators import RegexValidator
 from django.utils import timezone
 from .managers import UserManager
@@ -17,6 +17,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name     = models.CharField(_('last name'),max_length = 250)
     business_name = models.CharField(_('business_name'),max_length=250)
     role          = models.CharField(_('role'), max_length = 250)
+    client        = models.CharField(_('client'),max_length=250)
     email         = models.EmailField(_('email'), unique=True)
     password      = models.CharField(_('password'), max_length=300)
     is_staff      = models.BooleanField(_('staff'), default=False)

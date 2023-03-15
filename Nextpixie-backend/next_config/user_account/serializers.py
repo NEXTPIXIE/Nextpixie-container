@@ -1,37 +1,36 @@
 from rest_framework import serializers
-from djoser.serializers import UserCreateSerializer
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from rest_framework.response import Response
 from rest_framework import status
-# from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
 
-class UserSerializer(serializers.ModelSerializer):
-    role = serializers.CharField(max_length=100, default='staff')
+class UserRegistrationSerializer(serializers.ModelSerializer):
+    role = serializers.CharField(max_length=100, default='basic user')
+    client = serializers.CharField(max_length=100, default='user')
     password = serializers.CharField(style={"input_type": "password"}, write_only=True, required=False)
 
     class Meta():
         model = User
-        fields = ['id', "name", "email", 'role', "password"]
+        fields = ['id', "first_name", "last_name", "business_name", 'role', "client", "email", "password"]
 
     def create(self, validate_data):
 
         return User.objects.create_user(**validate_data)
 
-class AdminRegistrationSerializer(serializers.ModelSerializer):
-    role = serializers.CharField(max_length=100, default='admin')
-    password = serializers.CharField(style={"input_type": "password"}, write_only=True, required=False)
+# class AdminRegistrationSerializer(serializers.ModelSerializer):
+#     role = serializers.CharField(max_length=100, default='admin')
+#     password = serializers.CharField(style={"input_type": "password"}, write_only=True, required=False)
 
 
-    class Meta:
-        model = User
-        fields = ["id", "name", "email", "role", "password"]
+#     class Meta:
+#         model = User
+#         fields = ["id", "name", "email", "role", "password"]
 
-    def create(self, validated_data):
-        return User.objects.create_admin(**validated_data)
+#     def create(self, validated_data):
+#         return User.objects.create_admin(**validated_data)
 
         
 
