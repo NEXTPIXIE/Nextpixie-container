@@ -38,7 +38,20 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = [
+            'id',
+            'first_name',
+            'last_name',
+            'business_name',
+            'email',
+            'role',
+            'client',
+            'is_active',
+            'is_staff',
+            'is_admin'
+
+
+        ]
 
     
 class LoginSerializer(serializers.Serializer):
