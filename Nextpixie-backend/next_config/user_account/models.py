@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import Permission
 from django.contrib.auth.models import Group
 from django.utils.translation import gettext_lazy as _
 from .managers import UserManager
@@ -40,17 +41,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 
-class UserGroup(Group):
-    description = models.CharField(max_length=200)
-
     class Meta:
-        verbose_name = "Group"
-        verbose_name_plural = "Groups"
-from django.contrib.auth.models import Permission
-
-class MyPermission(Permission):
-    description = models.CharField(max_length=200)
-
-    class Meta:
-        verbose_name = "Permission"
-        verbose_name_plural = "Permissions"
+        permissions = [
+            ("can_create_album", "Can Create Album"),
+            ("can_view_album", "Can View Album"),
+        ]

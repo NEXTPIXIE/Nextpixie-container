@@ -11,9 +11,12 @@ from rest_framework import permissions, status
 from user_account.serializers import LoginSerializer, ChangePasswordSerializer, UserDetailSerializer, UserRegistrationSerializer, UserLogoutSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.signals import user_logged_in
-# Create your views here.
-
+from django.contrib.auth.models import User, Group
 User = get_user_model()
+
+
+
+
 
 
 class UserRegisterView(APIView):
@@ -28,10 +31,27 @@ class UserRegisterView(APIView):
         data['last_name'] = account.last_name
 
         return Response(data)
+    
+class AddUserGroups(APIView):
+    permission_classes = (IsAuthenticated,)
+    def post(self, request):
+        user = User.objects.get(email=request.user)
+        group = Group.objects.get(name='user')
+        user.groups.add(group)
 
+        return Response({"message": "verified user group"}, 201)
+
+
+"""
+Adding users to groups once the account is been created
+How tf do i create groups and add permissions seperately 
+
+"""
 class AllUsersView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
+
+    
 
 
 
