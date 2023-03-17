@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import Group
 from django.utils.translation import gettext_lazy as _
 from .managers import UserManager
 import uuid
@@ -16,6 +17,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     role          = models.CharField(_('role'), max_length = 250)
     client        = models.CharField(_('client'),max_length=250)
     email         = models.EmailField(_('email'), unique=True)
+    status        = models.BooleanField(_('status'), default=False)
     password      = models.CharField(_('password'), max_length=300)
     is_staff      = models.BooleanField(_('staff'), default=False)
     is_admin      = models.BooleanField(_('admin'), default= False)
@@ -33,3 +35,22 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+    
+
+
+
+
+class UserGroup(Group):
+    description = models.CharField(max_length=200)
+
+    class Meta:
+        verbose_name = "Group"
+        verbose_name_plural = "Groups"
+from django.contrib.auth.models import Permission
+
+class MyPermission(Permission):
+    description = models.CharField(max_length=200)
+
+    class Meta:
+        verbose_name = "Permission"
+        verbose_name_plural = "Permissions"
