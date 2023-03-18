@@ -1,5 +1,0 @@
-env
-.env
-*__pycache__
-db.sqlite3
-try.py
