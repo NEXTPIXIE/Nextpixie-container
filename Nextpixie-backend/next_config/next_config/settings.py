@@ -70,7 +70,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'djoser',
-    'user_account'
+    'user_account',
+    'main',
+    'socialauth'
+
 ]
 
 MIDDLEWARE = [
@@ -181,3 +184,4 @@ REST_FRAMEWORK = {
 AUTHENTICATION_BACKEND = ['django.contrib.auth.backends.ModelBackend']
 
 
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")

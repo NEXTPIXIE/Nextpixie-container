@@ -24,6 +24,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_admin      = models.BooleanField(_('admin'), default= False)
     is_active     = models.BooleanField(_('active'), default=True)
     date_joined   = models.DateTimeField(_('date joined'), auto_now_add=True)
+    client_provider = models.CharField(_('client_provider'), max_length=200, default='self_auth', null=True)
     
     objects = UserManager()
 
@@ -37,6 +38,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
     
+
 
 
 
