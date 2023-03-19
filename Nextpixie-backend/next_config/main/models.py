@@ -14,5 +14,6 @@ class UserAlbum(models.Model):
 
 class UserPhotos(models.Model):
     id = models.UUIDField(primary_key=True, unique=True, editable=False, default=uuid.uuid4)
+    album_id = models.ForeignKey("main.UserAlbum", on_delete=models.CASCADE, null=True, related_name="albums", blank=False)
     image = models.ImageField(blank=True, upload_to='images')
     time_stamp = models.DateTimeField(auto_now_add=True)

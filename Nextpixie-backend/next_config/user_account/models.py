@@ -47,4 +47,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         permissions = [
             ("can_create_album", "Can Create Album"),
             ("can_view_album", "Can View Album"),
+            ("can_publish_album", "Can Publish Album"),
+            
         ]
