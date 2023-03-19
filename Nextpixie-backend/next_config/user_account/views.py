@@ -18,6 +18,10 @@ User = get_user_model()
 
 
 
+
+
+
+
 class UserRegisterView(APIView):
     def post(self, request):
         serializer = UserRegistrationSerializer(data=request.data)
@@ -40,7 +44,6 @@ class AddUserGroups(APIView):
 
         return Response({"message": "verified user group"}, 201)
 
-
 """
 Adding users to groups once the account is been created
 How tf do i create groups and add permissions seperately 
@@ -51,8 +54,46 @@ class AllUsersView(ListAPIView):
     serializer_class = UserDetailSerializer
 
     
+class ChangePasswordView(generics.GenericAPIView):
+        """
+        An endpoint for changing password.
+        """
+        serializer_class = ChangePasswordSerializer
+        model = User
+        permission_classes = (IsAuthenticated,)
+
+        def get_object(self):
+            obj = self.request.user
+            return obj
+
+        def post(self, request):
+            self.object = self.get_object()
+            serializer = self.get_serializer(data=request.data)
+            if serializer.is_valid():
+                if not self.object.check_password(serializer.data.get("old_password")):
+                    return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+                self.object.set_password(serializer.data.get("new_password"))
+                self.object.save()
+                data = {
+                    'status': 'success',
+                    'message': 'Password updated successfully',
+                }
+                return Response(data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+class LogoutView(APIView):
+    serializer_class = UserLogoutSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({"Status": "Successfully logged out!"}, status=status.HTTP_204_NO_CONTENT)
+    
 
 
 class UserLoginView(APIView):
@@ -106,45 +147,3 @@ class UserLoginView(APIView):
                 'errors': 'The account is not active'
                 }
             return Response(data, status=status.HTTP_403_FORBIDDEN)
-
-
-
-class ChangePasswordView(generics.GenericAPIView):
-        """
-        An endpoint for changing password.
-        """
-        serializer_class = ChangePasswordSerializer
-        model = User
-        permission_classes = (IsAuthenticated,)
-
-        def get_object(self):
-            obj = self.request.user
-            return obj
-
-        def post(self, request):
-            self.object = self.get_object()
-            serializer = self.get_serializer(data=request.data)
-            if serializer.is_valid():
-                if not self.object.check_password(serializer.data.get("old_password")):
-                    return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
-                self.object.set_password(serializer.data.get("new_password"))
-                self.object.save()
-                data = {
-                    'status': 'success',
-                    'message': 'Password updated successfully',
-                }
-                return Response(data, status=status.HTTP_200_OK)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-class LogoutView(APIView):
-    serializer_class = UserLogoutSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response({"Status": "Successfully logged out!"}, status=status.HTTP_204_NO_CONTENT)

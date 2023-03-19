@@ -21,6 +21,13 @@ class AlbumSerializer(serializers.ModelSerializer):
 
 
 class ImageSerializer(serializers.ModelSerializer):
+    album_id = serializers.PrimaryKeyRelatedField(queryset=models.UserAlbum.objects.all(), required=False)
     class Meta:
         model = models.UserPhotos
-        fields = '__all__'
+        fields = [
+            'id',
+            'album_id',
+            'image',
+            'time_stamp'
+
+        ]

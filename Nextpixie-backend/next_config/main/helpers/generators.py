@@ -1,5 +1,7 @@
 import random
 import string
+import base64
+
 
 
 def generate_album_tag(n=6):
@@ -21,3 +23,10 @@ def generate_code():
         a.append(random.choice(["@","!","$","#","="]))
     random.shuffle(a)
     return "".join(a)
+
+
+
+def encode_file(image):
+    content = image.read()
+    encoded_content = base64.b64encode(content)
+    return encoded_content.decode('utf-8')
