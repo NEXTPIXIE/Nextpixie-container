@@ -38,8 +38,12 @@ class AddUserGroups(APIView):
         user = User.objects.get(email=request.user)
         group = Group.objects.get(name='user')
         user.groups.add(group)
+        data = {
+            "role": user.role,
+            "message": f"user with email ({user.email}) as been verified and added to a user group"
+        }
 
-        return Response({"message": "verified user group"}, 201)
+        return Response(data, 201)
 
 """
 Adding users to groups once the account is been created

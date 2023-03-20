@@ -20,6 +20,7 @@ class UserPhotos(models.Model):
     time_stamp = models.DateTimeField(auto_now_add=True)
 
 
-class UserCatgories(models.Model):
+class UserCategories(models.Model):
     id = models.UUIDField(primary_key=True, unique=True, editable=False, default=uuid.uuid4)
+    owner = models.ForeignKey("user_account.User", on_delete=models.CASCADE, null=True, related_name="owners",blank=True)
     name = models.CharField(max_length=250, blank=True)
