@@ -18,7 +18,8 @@ export const NavList =(location)=>{
         link: "/dashboard/gallery",
         active: isActive(location, "/dashboard/gallery"),
         type: "mainMenu",
-        display: true
+        display: true,
+        smile: true
     },
    
     {
