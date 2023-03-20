@@ -39,20 +39,6 @@ class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
-        # fields = [
-        #     'id',
-        #     'first_name',
-        #     'last_name',
-        #     'business_name',
-        #     'email',
-        #     'role',
-        #     'client',
-        #     'is_active',
-        #     'is_staff',
-        #     'is_admin'
-
-
-        # ]
 
     
 class LoginSerializer(serializers.Serializer):
@@ -63,28 +49,22 @@ class LoginSerializer(serializers.Serializer):
 
 
 class UserLogoutSerializer(serializers.Serializer):
-    refresh = serializers.CharField()
 
+    refresh = serializers.CharField()
     default_error_message = {
         'bad_token': ('Token is expired or invalid')
     }
-
     def validate(self, attrs):
         self.token = attrs['refresh']
         return attrs
-
     def save(self, **kwargs):
-
         try:
             RefreshToken(self.token).blacklist()
-
         except TokenError:
-
         	return Response({"message": "failed", "error": "Invalid refresh token"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ChangePasswordSerializer(serializers.Serializer):
-    # email = serializers.CharField(required=True)
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
 

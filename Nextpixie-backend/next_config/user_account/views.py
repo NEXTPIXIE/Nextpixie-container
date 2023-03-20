@@ -19,9 +19,6 @@ User = get_user_model()
 
 
 
-
-
-
 class UserRegisterView(APIView):
     def post(self, request):
         serializer = UserRegistrationSerializer(data=request.data)
