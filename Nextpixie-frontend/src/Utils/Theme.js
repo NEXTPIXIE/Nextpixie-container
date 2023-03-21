@@ -2,15 +2,15 @@ import { extendTheme } from '@chakra-ui/react';
 
 const theme = extendTheme({
   fonts: {
-    heading: "'Lexend', sans-serif",
-    body: "'Lexend', sans-serif",
+    heading: "'Public Sans', sans-serif",
+    body: "'Public Sans', sans-serif",
   },
   colors: {
     blue: {
       blue500: '#211f5c',
       blue400: '#2C346D',
       blue300: '#3A4A7E',
-      blue200: '#6689BB',
+      blue200: '#20486D',
       blue100: '#00203F',
       
     },
@@ -30,7 +30,7 @@ const theme = extendTheme({
     },
     gray: {
       gray500: 'rgba(255, 255, 255, 0.6)',
-      gray400: '#606060',
+      gray400: '#EBF5FF',
       gray300: '#858383',
       gray200: '#C0C0C1',
       gray100: '#EBF5FF;',

@@ -64,6 +64,15 @@ export default function SideBar() {
                </HStack>
 
             </Stack>
+
+            <Box bgColor="blue.blue200" rounded="8px" py="24px" px="30px" mr="32px" mt="60px" >
+                <Text fontSize={"14px"} textAlign="center" fontWeight={"600"} color="white">Upgrade to Pro</Text>
+                <Text fontSize={"12px"} textAlign="center" mt="8px" fontWeight={"400"} color="white">Access all of our features with no hassle.</Text>
+
+                <Box cursor={"pointer"} mt="16px" fontSize={"12px"} color="black" fontWeight={"600"}  bgColor="gray.gray400" rounded={"4px"} textAlign="center" py={"8px"} px="24px" >
+                    Coming soon!
+                </Box>
+            </Box>
                
               
 
