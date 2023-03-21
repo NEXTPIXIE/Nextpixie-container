@@ -3,8 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError
-from .models import UserAlbum, UserPhotos
-from .serializers import AlbumSerializer, ImageSerializer
+from .models import UserAlbum, UserPhotos, UserCategories
+from .serializers import AlbumSerializer, ImageSerializer, CategorySerializer
 from .helpers.generators import generate_album_tag, encode_file
 
 
@@ -20,6 +20,7 @@ class MainView(APIView):
         else:
             print(False)
         return Response({"wahala": "wahala"})
+
 
 class UserAlbumView(APIView):
     queryset = UserAlbum.objects.all()
@@ -47,12 +48,12 @@ class GetAlbum(APIView):
     def get(self, request):
         if request.user.has_perm('user_account.can_view_album'):
             try:
-                all_albums = UserAlbum.objects.all()
+                all_albums = UserAlbum.objects.filter(user=request.user)
             except UserAlbum.DoesNotExist:
                 return Response({"error": "albums not available"}, status=404)
             serializer = AlbumSerializer(all_albums, many=True)
             data = {
-                "all album": serializer.data
+                "albums": serializer.data
             }
             return Response(data)
         else:
@@ -91,6 +92,35 @@ class GetImages(APIView):
                 return Response({"error": "album images not found"}, status=404)
         else:
             return Response({"message": "user not permitted"}, status=401)
+
+class CategoryView(APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = CategorySerializer
+    
+    def post(self, request):
+        if request.user.has_perm('user_account.can_create_album'):
+
+            serializer = self.serializer_class(data=request.data)
+            data = {}
+            serializer.is_valid(raise_exception=True)
+            serializer.validated_data['owner'] = request.user
+            serializer.save()
+            data['response'] = 'successfully created a category.'
+            return Response(data)
+        
+    def get(self, request):
+        if request.user.has_perm('user_account.can_view_album'):
+            try:
+                all_albums = UserCategories.objects.filter(owner=request.user)
+            except UserCategories.DoesNotExist:
+                return Response({"error": "albums not available"}, status=404)
+            serializer = AlbumSerializer(all_albums, many=True)
+            data = {
+                "all album": serializer.data
+            }
+            return Response(data)
+        else:
+            return Response({"message": "user is not permitted"}, status=401)
 
 
 

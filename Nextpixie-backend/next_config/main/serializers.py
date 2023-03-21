@@ -31,3 +31,13 @@ class ImageSerializer(serializers.ModelSerializer):
             'time_stamp'
 
         ]
+
+class CategorySerializer(serializers.ModelSerializer):
+    owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
+    class Meta:
+        models = models.UserCategories
+        fileds = [
+            'id',
+            'owner',
+            'name'
+        ]

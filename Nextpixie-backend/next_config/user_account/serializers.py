@@ -10,7 +10,7 @@ User = get_user_model()
 class UserRegistrationSerializer(serializers.ModelSerializer):
     role = serializers.CharField(max_length=100, default='basic user')
     client = serializers.CharField(max_length=100, default='user')
-    password = serializers.CharField(style={"input_type": "password"}, write_only=True, required=False)
+    password = serializers.CharField(style={"input_type": "password"}, write_only=True, required=True)
 
     class Meta():
         model = User
