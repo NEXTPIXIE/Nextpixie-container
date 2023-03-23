@@ -20,7 +20,3 @@ class Command(BaseCommand):
         self.stdout.write('Group and permissions created')
 
 
-# Get the group object that you want to add permissions to
-
-# Define a list of permission codenames that you want to add to the group
-
