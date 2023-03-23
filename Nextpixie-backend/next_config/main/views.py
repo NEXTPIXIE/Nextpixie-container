@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError
 from .models import UserAlbum, UserPhotos, UserCategory
 from .serializers import AlbumSerializer, ImageSerializer, CategorySerializer
-from .helpers.generators import generate_album_tag, encode_file
+from .helpers.generators import generate_tag, encode_file
 
 
 
@@ -33,7 +33,7 @@ class UserAlbumView(APIView):
             serializer = self.serializer_class(data=request.data)
             data = {}
             serializer.is_valid(raise_exception=True)
-            serializer.validated_data['album_tag'] = generate_album_tag()
+            serializer.validated_data['album_tag'] = generate_tag()
             serializer.validated_data['user'] = request.user
             # serializer.validated_data['category'] = 
             serializer.save()
@@ -49,7 +49,7 @@ class GetAlbum(APIView):
     def get(self, request):
         if request.user.has_perm('user_account.can_view_album'):
             try:
-                all_albums = UserAlbum.objects.filter(user=request.user)
+                all_albums = UserAlbum.objects.filter(email=request.user)
             except UserAlbum.DoesNotExist:
                 return Response({"error": "albums not available"}, status=404)
             serializer = AlbumSerializer(all_albums, many=True)
@@ -112,7 +112,7 @@ class CategoryView(APIView):
     def get(self, request):
         if request.user.has_perm('user_account.can_view_album'):
             try:
-                categories = UserCategory.objects.filter(owner=request.user)
+                categories = UserCategory.objects.filter(email=request.user)
             except UserCategory.DoesNotExist:
                 return Response({"error": "category not available"}, status=404)
             serializer = CategorySerializer(categories, many=True)

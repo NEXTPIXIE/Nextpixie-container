@@ -4,7 +4,7 @@ import base64
 
 
 
-def generate_album_tag(n=6):
+def generate_tag(n=6):
     letters = string.ascii_uppercase
     code = [random.choice(letters) for _ in range(n)]
     nums = [str(random.choice(range(10))) for _ in range(n)]
