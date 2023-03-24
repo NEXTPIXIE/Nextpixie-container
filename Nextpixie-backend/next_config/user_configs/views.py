@@ -30,7 +30,21 @@ class ProfileView(APIView):
             serializer.save()
             data['response'] = 'successfully created profile.'
             return Response(data)
-            
+        
+    def get(self, request):
+        if request.user.has_perm('user_account.can_create_album'):
+            profile = UserProfile.objects.get(user=request.user)
+            serializer = ProfileSerializer(profile)
+            return Response({"profile": serializer.data})
+        else:
+            return Response({"erorr": "user is not permitted"}, 404)
+    def put(self, request):
+        if request.user.has_perm('user_account.can_create_album'):
+            profile = UserProfile.objects.get(user=request.user)
+            serializer = ProfileSerializer(profile, partial=True)
+            return Response
+##to be continued 
+
 
 class AddSecurityAlert(APIView):
     permission_classes = (IsAuthenticated,)
@@ -39,7 +53,6 @@ class AddSecurityAlert(APIView):
         try:
 
             user = User.objects.get(email=request.user)
-            print(user)
             permission = Permission.objects.get(codename='security_alert')
             user.user_permissions.add(permission)
             data = {
@@ -61,3 +74,122 @@ class AddSecurityAlert(APIView):
         except:
             return Response({"error": "user not found"}, 404)
 
+class AccessNotification(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        try:
+
+            user = User.objects.get(email=request.user)
+            permission = Permission.objects.get(codename='album_notification')
+            user.user_permissions.add(permission)
+            data = {
+                "message": f"notification alert as been added to user {user.email}"
+            }
+            return Response(data, 200)
+        except:
+            return Response({"error": "user not found"}, 404)
+        
+    def delete(self, request):
+        try:
+
+            user = User.objects.get(email=request.user)
+            permission = Permission.objects.get(codename='album_notification')
+            user.user_permissions.remove(permission)
+            data = {
+                "message": f"notification alert as been removed from user {user.email}"
+            }
+            return Response(data, 200)
+        except:
+            return Response({"error": "user not found"}, 404)
+
+
+
+class DownloadNotification(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        try:
+
+            user = User.objects.get(email=request.user)
+            permission = Permission.objects.get(codename='download_notification')
+            user.user_permissions.add(permission)
+            data = {
+                "message": f"download alert as been added to user {user.email}"
+            }
+            return Response(data, 200)
+        except:
+            return Response({"error": "user not found"}, 404)
+        
+    def delete(self, request):
+        try:
+
+            user = User.objects.get(email=request.user)
+            permission = Permission.objects.get(codename='download_notification')
+            user.user_permissions.remove(permission)
+            data = {
+                "message": f"download alert as been removed from user {user.email}"
+            }
+            return Response(data, 200)
+        except:
+            return Response({"error": "user not found"}, 404)
+
+
+class FavoritesNotification(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        try:
+
+            user = User.objects.get(email=request.user)
+            permission = Permission.objects.get(codename='favorites_notification')
+            user.user_permissions.add(permission)
+            data = {
+                "message": f"favorites notification alert as been added to user {user.email}"
+            }
+            return Response(data, 200)
+        except:
+            return Response({"error": "user not found"}, 404)
+        
+    def delete(self, request):
+        try:
+
+            user = User.objects.get(email=request.user)
+            permission = Permission.objects.get(codename='favorites_notification')
+            user.user_permissions.remove(permission)
+            data = {
+                "message": f"favorites notification alert as been removed from user {user.email}"
+            }
+            return Response(data, 200)
+        except:
+            return Response({"error": "user not found"}, 404)
+
+
+class CommentNotification(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        try:
+
+            user = User.objects.get(email=request.user)
+            permission = Permission.objects.get(codename='comment_notification')
+            user.user_permissions.add(permission)
+            data = {
+                "message": f"comment alert as been added to user {user.email}"
+            }
+            return Response(data, 200)
+        except:
+            return Response({"error": "user not found"}, 404)
+        
+    def delete(self, request):
+        try:
+
+            user = User.objects.get(email=request.user)
+            permission = Permission.objects.get(codename='comment_notification')
+            user.user_permissions.remove(permission)
+            data = {
+                "message": f"comment alert as been removed from user {user.email}"
+            }
+            return Response(data, 200)
+        except:
+            return Response({"error": "user not found"}, 404)

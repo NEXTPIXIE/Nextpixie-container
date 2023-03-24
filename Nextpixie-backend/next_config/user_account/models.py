@@ -48,6 +48,10 @@ class User(AbstractBaseUser, PermissionsMixin):
             ("can_create_album", "Can Create Album"),
             ("can_view_album", "Can View Album"),
             ("can_publish_album", "Can Publish Album"),
-            ("security_alert", "Security Alert")
+            ("security_alert", "Security Alert"),
+            ("album_notification", "Album Notification"),
+            ("download_notification", "Download Notification"),
+            ("favorites_notification", "Favorites Notification"),
+            ("comment_notification", "Comment Notification")
             
         ]
