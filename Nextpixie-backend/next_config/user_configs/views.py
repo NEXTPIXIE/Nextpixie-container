@@ -193,3 +193,156 @@ class CommentNotification(APIView):
             return Response(data, 200)
         except:
             return Response({"error": "user not found"}, 404)
+
+
+
+class AllowUsersViewProfile(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        try:
+
+            user = User.objects.get(email=request.user)
+            permission = Permission.objects.get(codename='users_can_view_profile')
+            user.user_permissions.add(permission)
+            data = {
+                "message": f"profile permission as been added to user {user.email}"
+            }
+            return Response(data, 200)
+        except:
+            return Response({"error": "user not found"}, 404)
+        
+    def delete(self, request):
+        try:
+
+            user = User.objects.get(email=request.user)
+            permission = Permission.objects.get(codename='users_can_view_profile')
+            user.user_permissions.remove(permission)
+            data = {
+                "message": f"profile permission as been removed from user {user.email}"
+            }
+            return Response(data, 200)
+        except:
+            return Response({"error": "user not found"}, 404)
+        
+
+class UsersCanDownload(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        try:
+
+            user = User.objects.get(email=request.user)
+            permission = Permission.objects.get(codename='users_can_download')
+            user.user_permissions.add(permission)
+            data = {
+                "message": f"User download permission as been added to user {user.email}"
+            }
+            return Response(data, 200)
+        except:
+            return Response({"error": "user not found"}, 404)
+        
+    def delete(self, request):
+        try:
+
+            user = User.objects.get(email=request.user)
+            permission = Permission.objects.get(codename='users_can_download')
+            user.user_permissions.remove(permission)
+            data = {
+                "message": f"user download permission as been removed from user {user.email}"
+            }
+            return Response(data, 200)
+        except:
+            return Response({"error": "user not found"}, 404)
+
+
+class UsersFavorite(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        try:
+
+            user = User.objects.get(email=request.user)
+            permission = Permission.objects.get(codename='users_can_favorite')
+            user.user_permissions.add(permission)
+            data = {
+                "message": f"user favorite permission as been added to user {user.email}"
+            }
+            return Response(data, 200)
+        except:
+            return Response({"error": "user not found"}, 404)
+        
+    def delete(self, request):
+        try:
+
+            user = User.objects.get(email=request.user)
+            permission = Permission.objects.get(codename='users_can_favorite')
+            user.user_permissions.remove(permission)
+            data = {
+                "message": f"user favorite permission as been removed from user {user.email}"
+            }
+            return Response(data, 200)
+        except:
+            return Response({"error": "user not found"}, 404)
+
+
+class UsersComment(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        try:
+
+            user = User.objects.get(email=request.user)
+            permission = Permission.objects.get(codename='users_can_comment')
+            user.user_permissions.add(permission)
+            data = {
+                "message": f"comment permission as been added to user {user.email}"
+            }
+            return Response(data, 200)
+        except:
+            return Response({"error": "user not found"}, 404)
+        
+    def delete(self, request):
+        try:
+
+            user = User.objects.get(email=request.user)
+            permission = Permission.objects.get(codename='users_can_comment')
+            user.user_permissions.remove(permission)
+            data = {
+                "message": f"comment permission as been removed from user {user.email}"
+            }
+            return Response(data, 200)
+        except:
+            return Response({"error": "user not found"}, 404)
+
+
+
+class UsersSharing(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        try:
+
+            user = User.objects.get(email=request.user)
+            permission = Permission.objects.get(codename='users_can_share')
+            user.user_permissions.add(permission)
+            data = {
+                "message": f"users sharing permission as been added to user {user.email}"
+            }
+            return Response(data, 200)
+        except:
+            return Response({"error": "user not found"}, 404)
+        
+    def delete(self, request):
+        try:
+
+            user = User.objects.get(email=request.user)
+            permission = Permission.objects.get(codename='users_can_share')
+            user.user_permissions.remove(permission)
+            data = {
+                "message": f"users sharing permission as been removed from user {user.email}"
+            }
+            return Response(data, 200)
+        except:
+            return Response({"error": "user not found"}, 404)
+

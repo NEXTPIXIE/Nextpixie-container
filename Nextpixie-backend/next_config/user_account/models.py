@@ -45,6 +45,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         permissions = [
+            ("users_can_view_profile", "Users Can View Profile"),
+            ("users_can_download", "Users Can Download"),
+            ("users_can_favorite", "Users Can Favorite"),
+            ("users_can_comment", "Users Can Comment"),
+            ("users_can_share", "Users Can Share"),
             ("can_create_album", "Can Create Album"),
             ("can_view_album", "Can View Album"),
             ("can_publish_album", "Can Publish Album"),
