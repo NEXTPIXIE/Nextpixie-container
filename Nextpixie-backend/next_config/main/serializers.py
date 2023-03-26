@@ -7,12 +7,13 @@ User = get_user_model()
 
 class AlbumSerializer(serializers.ModelSerializer):
     album_tag = serializers.CharField(max_length=200, required=False)
-    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=True)
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
     category = serializers.PrimaryKeyRelatedField(queryset=models.UserCategory.objects.all(), required=False)
     class Meta:
         model = models.UserAlbum
         fields = [
             'id',
+            'category',
             'user',
             'name',
             'caption',
@@ -34,11 +35,15 @@ class ImageSerializer(serializers.ModelSerializer):
         ]
 
 class CategorySerializer(serializers.ModelSerializer):
-    owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
     class Meta:
-        models = models.UserCategory
-        fileds = [
+        model = models.UserCategory
+        fields = [
             'id',
-            'owner',
+            'user',
             'name'
         ]
+
+class CreateAlbumCategorySerializer(serializers.Serializer):
+    category = CategorySerializer()
+    album = AlbumSerializer()

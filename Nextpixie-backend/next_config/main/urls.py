@@ -11,6 +11,7 @@ urlpatterns = [
     path('upload/image/<str:id>', views.UserImageView.as_view()),
     path('album/images/<str:id>', views.GetImages.as_view()),
     path('category', views.CategoryView.as_view()),
+    path('category/album', views.CategoryAlbumView.as_view())
     
 
 

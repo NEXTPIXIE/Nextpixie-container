@@ -23,6 +23,6 @@ class UserPhotos(models.Model):
 
 
 class UserCategory(models.Model):
-    name  = models.CharField(max_length=200, null=True, blank=True)
+    name  = models.CharField(max_length=200, null=True, blank=False)
     user = models.ForeignKey("user_account.User", on_delete=models.CASCADE, null=True, related_name="user",blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)

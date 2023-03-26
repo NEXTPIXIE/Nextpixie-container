@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError
 from .models import UserAlbum, UserPhotos, UserCategory
-from .serializers import AlbumSerializer, ImageSerializer, CategorySerializer
+from .serializers import AlbumSerializer, ImageSerializer, CategorySerializer, CreateAlbumCategorySerializer
 from .helpers.generators import generate_tag, encode_file
 
 
@@ -124,5 +124,26 @@ class CategoryView(APIView):
             return Response({"message": "user is not permitted"}, status=401)
 
 
+class CategoryAlbumView(APIView):
+    permission_classes = (IsAuthenticated,)
+    def post(self, request):
+        serializer = CreateAlbumCategorySerializer(data=request.data)
 
+        if serializer.is_valid():
+            category = serializer.validated_data.pop('category')
+            album = serializer.validated_data.pop('album')
+            
+            
+            obj = UserCategory.objects.create(user=request.user, **category)
+            
+            album_data = UserAlbum.objects.create(category=obj, user=request.user, album_tag=generate_tag(), **album)
+            
+            data = {"message": "success", 
+                    "category": CategorySerializer(obj).data, 
+                    "album":AlbumSerializer(album_data).data
+                    }
+            
+            return Response(data, status=200)
+        else:
+            return Response(serializer.errors, status=400)
 
