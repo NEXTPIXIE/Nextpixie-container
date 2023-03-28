@@ -36,7 +36,7 @@ class AddUserGroups(APIView):
     permission_classes = (IsAuthenticated,)
     def post(self, request):
         user = User.objects.get(email=request.user)
-        group = Group.objects.get(name='user')
+        group = Group.objects.get(id=1)
         user.groups.add(group)
         data = {
             "role": user.role,

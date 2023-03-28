@@ -74,7 +74,8 @@ INSTALLED_APPS = [
     'djoser',
     'user_account',
     'main',
-    'socialauth'
+    'socialauth',
+    'user_configs'
 
 ]
 
