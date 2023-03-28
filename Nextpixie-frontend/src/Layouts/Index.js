@@ -1,4 +1,4 @@
-import { Box, Stack } from '@chakra-ui/react'
+import { Box, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
 import NavBar from './NavBar'
 import SideBar from './SideBar'
@@ -16,6 +16,7 @@ export default function MainLayout({ children, bgColor = "blue.blue100", layoutC
         <Box width={'100%'}>
 
           <Box borderRadius="8px" mt="15px" p="20px" color={color} mr="0px" minH='100vh' width={['100%', '100%', '100%', '100%', '98.5%']} bgColor={layoutColor}>
+     
             {children}
           </Box>
 

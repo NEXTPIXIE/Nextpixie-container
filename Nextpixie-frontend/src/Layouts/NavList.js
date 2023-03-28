@@ -30,6 +30,7 @@ export const NavList =(location)=>{
         type: "mainMenu",
         display: true
     },
+   
     {
         name: "notifications",
         icon: <MdNotifications/>,

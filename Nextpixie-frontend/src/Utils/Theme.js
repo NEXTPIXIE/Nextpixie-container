@@ -35,6 +35,7 @@ const theme = extendTheme({
       gray200: '#C0C0C1',
       gray100: '#EBF5FF;',
     },
+    
     background: '#EEF3FF',
     green: '#38890B',
     white: '#FFFFFF',
