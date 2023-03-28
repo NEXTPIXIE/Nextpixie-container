@@ -20,20 +20,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
         return User.objects.create_user(**validate_data)
 
-# class AdminRegistrationSerializer(serializers.ModelSerializer):
-#     role = serializers.CharField(max_length=100, default='admin')
-#     password = serializers.CharField(style={"input_type": "password"}, write_only=True, required=False)
-
-
-#     class Meta:
-#         model = User
-#         fields = ["id", "name", "email", "role", "password"]
-
-#     def create(self, validated_data):
-#         return User.objects.create_admin(**validated_data)
-
-        
-
 
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
