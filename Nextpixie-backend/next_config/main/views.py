@@ -6,6 +6,8 @@ from rest_framework.exceptions import ValidationError
 from .models import UserAlbum, UserPhotos, UserCategory
 from .serializers import AlbumSerializer, ImageSerializer, CategorySerializer, CreateAlbumCategorySerializer
 from .helpers.generators import generate_tag, encode_file
+from django.shortcuts import get_object_or_404
+
 
 
 
@@ -52,6 +54,7 @@ class GetAlbum(APIView):
                 all_albums = UserAlbum.objects.filter(email=request.user)
             except UserAlbum.DoesNotExist:
                 return Response({"error": "albums not available"}, status=404)
+            
             serializer = AlbumSerializer(all_albums, many=True)
             data = {
                 "albums": serializer.data
@@ -123,27 +126,67 @@ class CategoryView(APIView):
         else:
             return Response({"message": "user is not permitted"}, status=401)
 
+# class CategoryAlbumView(APIView):
+#     permission_classes = (IsAuthenticated,)
+#     def post(self, request):
+#         serializer = CreateAlbumCategorySerializer(data=request.data)
+
+#         serializer.is_valid(raise_exception=True)
+#         category = serializer.validated_data.pop('category')
+#         album = serializer.validated_data.pop('album')
+#         user_name = category['name']
+#         user_category = get_object_or_404(UserCategory, name=user_name)
+#         print(user_category)
+#         if user_category:
+#             user_album = UserAlbum.objects.create(category=user_category, user=request.user, album_tag=generate_tag(), **album)
+#             data = {
+#                 "message": "success",
+#                 "album": AlbumSerializer(user_album).data
+#             }
+
+#             return Response(data, 200)
+#         else:            
+#             obj = UserCategory.objects.create(user=request.user, **category)
+            
+#             album_data = UserAlbum.objects.create(category=obj, user=request.user, album_tag=generate_tag(), **album)
+            
+#             data1 = {"message": "success", 
+#                     "category": CategorySerializer(obj).data, 
+#                     "album":AlbumSerializer(album_data).data
+#                     }
+            
+#             return Response(data1, status=200)
+
+from django.http import Http404
 
 class CategoryAlbumView(APIView):
     permission_classes = (IsAuthenticated,)
     def post(self, request):
         serializer = CreateAlbumCategorySerializer(data=request.data)
 
-        if serializer.is_valid():
-            category = serializer.validated_data.pop('category')
-            album = serializer.validated_data.pop('album')
-            
-            
+        serializer.is_valid(raise_exception=True)
+        category = serializer.validated_data.pop('category')
+        album = serializer.validated_data.pop('album')
+        user_name = category['name']
+        
+        try:
+            user_category = get_object_or_404(UserCategory, name=user_name)
+        except Http404:
             obj = UserCategory.objects.create(user=request.user, **category)
             
             album_data = UserAlbum.objects.create(category=obj, user=request.user, album_tag=generate_tag(), **album)
             
-            data = {"message": "success", 
+            data1 = {"message": "success", 
                     "category": CategorySerializer(obj).data, 
                     "album":AlbumSerializer(album_data).data
                     }
             
-            return Response(data, status=200)
-        else:
-            return Response(serializer.errors, status=400)
+            return Response(data1, status=200)
+        
+        user_album = UserAlbum.objects.create(category=user_category, user=request.user, album_tag=generate_tag(), **album)
+        data = {
+            "message": "success",
+            "album": AlbumSerializer(user_album).data
+        }
 
+        return Response(data, 200)
