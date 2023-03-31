@@ -12,6 +12,7 @@ from user_account.serializers import LoginSerializer, ChangePasswordSerializer, 
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.signals import user_logged_in
 from django.contrib.auth.models import User, Group
+from .helpers.mail import signup_mail
 User = get_user_model()
 
 
@@ -25,6 +26,7 @@ class UserRegisterView(APIView):
         data = {}
         serializer.is_valid(raise_exception=True)
         account = serializer.save()
+        signup_mail(account.email)
         data['response'] = 'successfully registered a new user.'
         data['email'] = account.email
         data['first_name'] = account.first_name
