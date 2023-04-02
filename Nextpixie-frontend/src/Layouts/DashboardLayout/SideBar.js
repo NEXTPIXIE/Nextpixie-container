@@ -28,7 +28,7 @@ export default function SideBar() {
         {List?.filter(
           (item) => item.display === true && item.type === "mainMenu"
         ).map((item, i) => (
-          <Link to={item.link}>
+          <Link to={item.link} key={i}>
             <HStack
               bgColor={item.active ? "gray.gray100" : "transparent"}
               borderLeftRadius="8px"
@@ -43,7 +43,6 @@ export default function SideBar() {
                 borderLeftRadius: "8px",
                 color: "black",
               }}
-              key={i}
               cursor="pointer"
             >
               <Box fontSize={"20px"} pos="relative" top="-1px">
@@ -68,7 +67,7 @@ export default function SideBar() {
         {List?.filter(
           (item) => item.display === true && item.type === "others"
         ).map((item, i) => (
-          <Link to={item.link}>
+          <Link to={item.link} key={i}>
             <HStack
               bgColor={item.active ? "gray.gray100" : "transparent"}
               borderLeftRadius="8px"
@@ -83,7 +82,6 @@ export default function SideBar() {
                 borderLeftRadius: "8px",
                 color: "black",
               }}
-              key={i}
               cursor="pointer"
             >
               <Box fontSize={"20px"} pos="relative" top="-1px">
