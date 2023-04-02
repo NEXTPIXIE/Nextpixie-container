@@ -25,7 +25,7 @@ export default function NavBar() {
     },
   ];
   return (
-    <div>
+    <div className=" flex justify-between">
       <Logo />
 
       <ul>
