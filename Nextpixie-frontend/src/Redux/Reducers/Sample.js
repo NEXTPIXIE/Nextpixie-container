@@ -6,8 +6,8 @@ export default function Sample() {
     title: "",
     description: "",
   });
-  const counter = useSelector((state) => state.counter);
-  const isLogged = useSelector((state) => state.isLogged);
+  // const counter = useSelector((state) => state.counter);
+  // const isLogged = useSelector((state) => state.isLogged);
   const myTodo = useSelector((state) => state.myTodo);
   const dispatch = useDispatch();
 
@@ -15,7 +15,7 @@ export default function Sample() {
   const [Button, setButton] = useState("Add Todo");
 
   const AddTodo = () => {
-    if (Button == "Add Todo") {
+    if (Button === "Add Todo") {
       dispatch(
         // collect two parameters (type and payload)
 

@@ -7,11 +7,8 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { act } from "react-dom/test-utils";
-import { AiOutlineMail } from "react-icons/ai";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Input({
