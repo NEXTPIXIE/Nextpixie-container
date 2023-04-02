@@ -1,11 +1,11 @@
 body {
   margin: 0;
-  font-family: 'Public Sans', sans-serif;
+  font-family: "Public Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-//scroll bar 
+/* scroll bar  */
 
 ::-webkit-scrollbar {
   width: 3px;
@@ -19,13 +19,14 @@ body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #20486D; 
+  background: #20486d;
   border-radius: 4px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #00474F; 
-}  ::-webkit-scrollbar {
+  background: #00474f;
+}
+::-webkit-scrollbar {
   width: 4px;
 }
