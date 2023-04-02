@@ -1,7 +1,7 @@
 import { AiFillPicture } from "react-icons/ai";
 import { MdNotifications, MdOutlineAnalytics } from "react-icons/md";
 import { RiSettings2Fill } from "react-icons/ri";
-import { isActive } from "../Authentication";
+import { isActive } from "../../Authentication";
 export const NavList = (location) => {
   let List = [
     {
