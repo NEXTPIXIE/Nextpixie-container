@@ -12,17 +12,11 @@ def generate_tag(n=6):
     return "".join(code[-2:])+ "".join(nums[:4])
         
         
-
-
-def generate_code():
-    a = []
-    for _ in range(4):
-        a.append(random.choice(string.ascii_lowercase))
-        a.append(random.choice(string.ascii_uppercase))
-        a.append(random.choice(string.digits))
-        a.append(random.choice(["@","!","$","#","="]))
-    random.shuffle(a)
-    return "".join(a)
+        
+def generate_code() -> str:
+    digits = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    otp = "".join(str(random.choice(digits)) for _ in range(6))
+    return otp
 
 
 

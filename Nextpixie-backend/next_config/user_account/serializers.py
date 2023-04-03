@@ -3,6 +3,7 @@ from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import get_user_model
+from .models import UserOTP
 
 User = get_user_model()
 
@@ -55,3 +56,18 @@ class ChangePasswordSerializer(serializers.Serializer):
     new_password = serializers.CharField(required=True)
 
 
+class OTPSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserOTP
+        fields = '__all__'
+
+
+
+class MailSerializer(serializers.Serializer):
+    email = serializers.CharField(required=True)
+
+
+
+class OTPVerification(serializers.Serializer):
+    otp = OTPSerializer()
+    email = MailSerializer()

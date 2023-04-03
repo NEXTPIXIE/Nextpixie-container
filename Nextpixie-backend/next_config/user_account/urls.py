@@ -15,6 +15,9 @@ urlpatterns = [
     path('refresh', TokenRefreshView().as_view(), name="refresh_token"),
     path('auth/', include('djoser.urls')),
     path('token/verify', TokenVerifyView.as_view(), name='token_verify'),
-    path('groups', views.AddUserGroups.as_view())
+    path('djoser/', include('djoser.urls')),
+    path('groups', views.AddUserGroups.as_view()),
+    path('verify/otp', views.OTPVerificationView.as_view()),
+    path('request/otp', views.RequestOTP.as_view())
 
 ]
