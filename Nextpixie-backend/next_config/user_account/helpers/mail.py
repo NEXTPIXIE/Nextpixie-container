@@ -5,7 +5,7 @@ key = os.getenv("email_key")
 
 def signup_mail(email):
  
-    plunk = requests.post(
+    requests.post(
         "https://api.useplunk.com/v1/track",
         headers={
             "Content-Type": "application/json",
@@ -14,8 +14,24 @@ def signup_mail(email):
         json={
             "event": "user-signup",
             "email": email
-            }
+        }
         
     )
 
-    print(plunk)
+
+def send_otp_mail(email, otp_code):
+
+    requests.post(
+        "https://api.useplunk.com/v1/track",
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {key}"
+        },
+        json={
+            "event": "otp_mail",
+            "email": email,
+            "data": {
+                "otp": otp_code
+            }
+        },
+    )

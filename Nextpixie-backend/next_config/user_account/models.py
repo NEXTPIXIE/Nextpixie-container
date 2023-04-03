@@ -5,6 +5,8 @@ from django.contrib.auth.models import Permission
 from django.contrib.auth.models import Group
 from django.utils.translation import gettext_lazy as _
 from .managers import UserManager
+from django.utils import timezone
+
 import uuid
 
 
@@ -60,3 +62,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             ("comment_notification", "Comment Notification")
             
         ]
+
+class UserOTP(models.Model):
+    otp = models.IntegerField(null=True, blank=False)
+    timestamp = models.DateTimeField(default=timezone.now)
