@@ -12,7 +12,7 @@ export default function Button({
   size = "md",
   disabled = false,
   full = false,
-  background = "blue.blue400",
+  background = "blue.blue100",
   color = "#fff",
   border,
   w = "100%",
@@ -34,6 +34,7 @@ export default function Button({
       color={color}
       bg={background}
       border={border}
+      textTransform={"capitalize"}
       transition="0.5s"
       _hover={{
         bg: "blue.blue400",
