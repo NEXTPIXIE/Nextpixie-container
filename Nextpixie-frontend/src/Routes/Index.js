@@ -8,6 +8,7 @@ import NotFound from "../Pages/NotFound";
 import LandingPageLayout from "../Layouts/LandingPageLayout";
 import Features from "../Pages/Features";
 import Examples from "../Pages/Examples";
+import SignUp from "../Pages/AuthPages/SignUp";
 
 export default function IndexRoutes() {
   return (
@@ -22,6 +23,7 @@ export default function IndexRoutes() {
         <Route path="/dashboard/notifications" element={<Notifications />} />
         <Route path="/dashboard/analytics" element={<Analytics />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/sign-up" element={<SignUp />} />
       </Routes>
     </BrowserRouter>
   );

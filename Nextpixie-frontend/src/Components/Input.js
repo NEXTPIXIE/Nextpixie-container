@@ -9,6 +9,7 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Input({
@@ -38,6 +39,18 @@ export default function Input({
 
   const [inputType, setInputType] = useState(type);
 
+  const switchEye = ()=>{
+    
+      if (inputType === "password") {
+        setInputType("text");
+      } else {
+        setInputType("password");
+      }
+    }
+  
+useEffect(() => {
+  switchEye()
+}, [])
   return (
     <FormControl
       id={id}
@@ -57,9 +70,9 @@ export default function Input({
         fontWeight="400"
         color={"#00000"}
         bg={active ? labelBg : "transparent"}
-        px="4px"
+        px="0px"
       >
-        {label}
+        {/* {label} */}
       </FormLabel>
 
       <InputGroup>
@@ -92,8 +105,10 @@ export default function Input({
             fontSize="16px"
             fontFamily={"body"}
             borderColor={bColor}
-            rounded="8px"
-            bg="transparent"
+            rounded="4px"
+            pl={"12px !important"}
+            bg="rgba(235, 245, 255, 0.42)"
+         
             w={w}
             onFocus={() => setActive(true)}
             onBlur={() => {
@@ -115,13 +130,7 @@ export default function Input({
               )
             }
             cursor={"pointer"}
-            onClick={() => {
-              if (inputType === "password") {
-                setInputType("text");
-              } else {
-                setInputType("password");
-              }
-            }}
+            onClick={switchEye}
           />
         )}
       </InputGroup>
