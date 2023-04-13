@@ -5,10 +5,13 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError
 from django.contrib.auth.models import User, Permission
 from .models import UserProfile
+from django.http import Http404
 from .serializers import ProfileSerializer
 from main.helpers.generators import generate_tag
 from django.contrib.auth import get_user_model
 User = get_user_model()
+import requests
+
 # Create your views here.
 
 
@@ -346,3 +349,13 @@ class UsersSharing(APIView):
         except:
             return Response({"error": "user not found"}, 404)
 
+
+class GetUserLocation(APIView):
+    def get(self, request):
+        try:
+            url = "http://ip-api.com/json/"
+
+            response = requests.get(url=url)
+            return Response(response)
+        except Http404:
+            return Response({"error": "location undefined"}, status=400)

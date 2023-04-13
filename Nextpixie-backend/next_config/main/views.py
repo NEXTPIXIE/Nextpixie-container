@@ -18,6 +18,7 @@ from django.http import Http404
 
 class MainView(APIView):
     permission_classes = (IsAuthenticated,)
+    """testing user permissions"""
     def post(self, request):
         if request.user.has_perm('user_account.can_create_album'):
             print(True)
