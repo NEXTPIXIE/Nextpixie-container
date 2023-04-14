@@ -18,9 +18,15 @@ from django.http import Http404
 
 class MainView(APIView):
     permission_classes = (IsAuthenticated,)
+    """testing user permissions"""
     def post(self, request):
-        if request.user.has_perm('user_account.can_create_album'):
-            print(True)
+        if not request.user.has_perm('user_account.can_create_album'):
+            data = {
+                "device": request.user_agent.device.family,
+                "browser": request.user_agent.browser,
+               
+            }
+            return Response(data, 200)
         else:
             print(False)
         return Response({"wahala": "wahala"})
