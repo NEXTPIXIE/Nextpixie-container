@@ -33,7 +33,6 @@ class MainView(APIView):
 
 
 class UserAlbumView(APIView):
-    queryset = UserAlbum.objects.all()
     serializer_class = AlbumSerializer
     permission_classes = (IsAuthenticated,)
 
