@@ -11,11 +11,6 @@ from django.http import Http404
 
 
 
-
-
-
-
-
 class MainView(APIView):
     permission_classes = (IsAuthenticated,)
     """testing user permissions"""
@@ -165,3 +160,4 @@ class CategoryAlbumView(APIView):
         }
 
         return Response(data, 200)
+

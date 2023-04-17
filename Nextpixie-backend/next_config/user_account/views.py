@@ -30,16 +30,15 @@ class OTPVerificationView(APIView):
         email = serializer.validated_data.pop('email')
         user_email = email
         user_otp = otp
-        
         try:
             user = User.objects.get(email=user_email['email'])
             user_otp_obj = get_object_or_404(UserOTP, otp=user_otp['otp'])
 
-           
+
             if not is_otp_expired(user_otp_obj.timestamp):
                 user_otp_obj.delete()
                 return Response({"error": "otp expired, request new otp"}, status=400)
-            
+
             if user.status == True:
                 user_otp.delete()
                 return Response({"error": "user already verified"}, status=400)
@@ -47,19 +46,17 @@ class OTPVerificationView(APIView):
                 user.status = True
                 user.save()
                 user_otp_obj.delete()
-
                 return Response({"message": "user email verified"}, status=200)
-            
+
         except Http404:
             return Response({"error": "invalid otp"}, status=400)
 
         except User.DoesNotExist:
             return Response({"error": "Invalid email address"}, status=400)
-         
+
 class RequestOTP(APIView):
     def post(self, request):
         serializer = MailSerializer(data=request.data)
-
         serializer.is_valid(raise_exception=True)
         email = serializer.validated_data['email']
         otp_code = generate_code()
@@ -86,7 +83,7 @@ class UserRegisterView(APIView):
         data['last_name'] = account.last_name
 
         return Response(data)
-    
+
 class AddUserGroups(APIView):
     permission_classes = (IsAuthenticated,)
     def post(self, request):
@@ -102,14 +99,14 @@ class AddUserGroups(APIView):
 
 """
 Adding users to groups once the account is been created
-How tf do i create groups and add permissions seperately 
+How tf do i create groups and add permissions seperately
 
 """
 class AllUsersView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
 
-    
+
 class ChangePasswordView(generics.GenericAPIView):
         """
         An endpoint for changing password.
@@ -149,11 +146,11 @@ class LogoutView(APIView):
         serializer.save()
 
         return Response({"Status": "Successfully logged out!"}, status=status.HTTP_204_NO_CONTENT)
-    
+
 
 
 class UserLoginView(APIView):
-    
+
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
