@@ -16,7 +16,7 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('token/verify', TokenVerifyView.as_view(), name='token_verify'),
     path('djoser/', include('djoser.urls')),
-    path('groups', views.AddUserGroups.as_view()),
+    path('user/groups', views.AddUserGroups.as_view()),
     path('verify/otp', views.OTPVerificationView.as_view()),
     path('request/otp', views.RequestOTP.as_view())
 

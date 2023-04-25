@@ -37,17 +37,20 @@ class ProfileView(APIView):
         
     def get(self, request):
         if request.user.has_perm('user_account.can_create_album'):
-            profile = UserProfile.objects.get(user=request.user)
-            serializer = ProfileSerializer(profile)
-            return Response({"profile": serializer.data})
+            try:
+                profile = UserProfile.objects.get(user=request.user.id)
+                serializer = ProfileSerializer(profile)
+                return Response({"profile": serializer.data})
+            except UserProfile.DoesNotExist:
+                return Response({"error": "profile not found"}, status=404)
         else:
             return Response({"erorr": "user is not permitted"}, 404)
+
     def put(self, request):
         if request.user.has_perm('user_account.can_create_album'):
             profile = UserProfile.objects.get(user=request.user)
             serializer = ProfileSerializer(profile, partial=True)
             return Response
-##to be continued 
 
 
 class AddSecurityAlert(APIView):
