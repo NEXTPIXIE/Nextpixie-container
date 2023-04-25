@@ -103,7 +103,7 @@ How tf do i create groups and add permissions seperately
 
 """
 class AllUsersView(ListAPIView):
-    queryset = User.objects.all()
+    queryset = User.objects.filter(is_deleted=False)
     serializer_class = UserDetailSerializer
 
 

@@ -10,7 +10,6 @@ from django.shortcuts import get_object_or_404
 from django.http import Http404
 
 
-
 class MainView(APIView):
     permission_classes = (IsAuthenticated,)
     """testing user permissions"""
@@ -53,7 +52,7 @@ class GetAlbum(APIView):
     def get(self, request):
         if request.user.has_perm('user_account.can_view_album'):
             try:
-                all_albums = UserAlbum.objects.filter(email=request.user)
+                all_albums = UserAlbum.objects.filter(user=request.user)
             except UserAlbum.DoesNotExist:
                 return Response({"error": "albums not available"}, status=404)
             
@@ -137,8 +136,7 @@ class CategoryAlbumView(APIView):
         serializer.is_valid(raise_exception=True)
         category = serializer.validated_data.pop('category')
         album = serializer.validated_data.pop('album')
-        user_name = category['name']
-        
+        user_name = category['name']        
         try:
             user_category = get_object_or_404(UserCategory, name=user_name)
         except Http404:
@@ -160,4 +158,10 @@ class CategoryAlbumView(APIView):
         }
 
         return Response(data, 200)
+
+    # def put(self, request):
+
+
+
+
 

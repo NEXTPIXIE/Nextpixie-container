@@ -117,12 +117,16 @@ WSGI_APPLICATION = 'next_config.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('db_name'),
+            'HOST': os.getenv('db_host'),
+            'USER': os.getenv('db_user'),
+            'PASSWORD': os.getenv('db_password'),
+            'PORT': os.getenv('db_port'),
 
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -173,7 +177,7 @@ AUTH_USER_MODEL = 'user_account.User'
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=2),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
     'UPDATE_LAST_LOGIN': True,
     'SIGNING_KEY': SECRET_KEY,
     'AUTH_HEADER_TYPES': ('Bearer',),
