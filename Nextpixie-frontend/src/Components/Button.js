@@ -21,30 +21,46 @@ export default function Button({
   href,
   mt,
   mb,
+  mx,
+  my,
   px = "85px",
   loadingText = "Please wait . . .",
   py = "8px",
+  pt,
+  pb,
+  className,
+  rounded,
+  fontWeight,
+  _hover,
+  _active,
 }) {
   const history = useNavigate();
 
   return (
     <ButtonBox
       fontSize={size === "xs" ? "xs" : size === "sm" ? "sm" : "16px"}
-      fontWeight={"700"}
+      fontWeight={fontWeight || "600"}
       color={color}
       bg={background}
       border={border}
       textTransform={"capitalize"}
       transition="0.5s"
-      _hover={{
-        bg: "blue.blue400",
-        color: "black",
-      }}
-      _active={{
-        bg: "blue.blue400",
-        color: "black",
-      }}
-      rounded="8px"
+      _hover={
+        _hover || {
+          // bg: "blue.blue400",
+          color: "black",
+          bg: "transparent",
+          border: "1px solid #000",
+        }
+      }
+      _active={
+        _active || {
+          bg: "blue.blue400",
+          border: "1px solid #000",
+          color: "black",
+        }
+      }
+      rounded={rounded || "4px"}
       size={size}
       as="button"
       onClick={() => {
@@ -57,10 +73,15 @@ export default function Button({
       w={w}
       px={px}
       py={py}
+      pt={pt || "0px"}
+      pb={pb || "0px"}
       leftIcon={leftIcon}
       rightIcon={rightIcon}
       mt={mt}
       mb={mb}
+      mx={mx || "0px"}
+      my={my || "0px"}
+      className={className || ""}
     >
       <Box as="a" href={href}>
         {children}
