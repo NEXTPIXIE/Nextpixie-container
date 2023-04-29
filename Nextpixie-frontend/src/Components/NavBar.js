@@ -25,12 +25,18 @@ export default function NavBar() {
     },
   ];
   return (
-    <div className=" flex justify-between">
+    <div className=" flex justify-between shadow-NavBarboxShadow">
       <Logo />
 
-      <ul>
+      <ul className="flex items-center gap-8">
         {NavLi.map((item) => (
-          <NavLink key={item.id} to={item.link}>
+          <NavLink
+            key={item.id}
+            className={({ isActive }) => {
+              return isActive ? "text-blue-500" : "text-gray-500";
+            }}
+            to={item.link}
+          >
             <li>{item.name}</li>
           </NavLink>
         ))}
