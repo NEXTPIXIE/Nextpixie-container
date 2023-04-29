@@ -1,12 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../Components/Button";
-import HomePageIntroImage from "../../Assets/Images/home-page-intro-image.png";
+import HomePageIntroImage from "../../Assets/Images/Home/home-page-intro-image.png";
 
 const Intro = () => {
   const navigate = useNavigate();
   return (
-    <div className="bg-CustomBlue-1 flex items-center flex-col p-10">
+    <div className="bg-CustomBlue-1 flex items-center flex-col p-10 pt-16">
       <div className="w-[66%] flex items-center flex-col gap-6">
         <h1 className=" text-center text-[2rem] font-bold flex flex-col">
           <div className=" flex items-center justify-center">

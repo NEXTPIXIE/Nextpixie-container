@@ -25,7 +25,7 @@ export default function NavBar() {
     },
   ];
   return (
-    <div className=" flex justify-between shadow-NavBarboxShadow p-3 px-8">
+    <div className=" flex justify-between shadow-NavBarboxShadow p-3 px-8 relative z-10">
       <Link to={"/"}>
         <Logo />
       </Link>
