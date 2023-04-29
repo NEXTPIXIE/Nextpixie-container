@@ -6,7 +6,9 @@ import { Outlet } from "react-router-dom";
 const LandingPageLayout = () => {
   return (
     <div>
-      <NavBar />
+      <div className=" bg-CustomBlue-1">
+        <NavBar />
+      </div>
       <Outlet />
       <Footer />
     </div>
