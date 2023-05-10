@@ -50,7 +50,11 @@ class ProfileView(APIView):
         if request.user.has_perm('user_account.can_create_album'):
             profile = UserProfile.objects.get(user=request.user)
             serializer = ProfileSerializer(profile, partial=True)
-            return Response
+            data = {
+                "message": "edited user profile",
+                "data": serializer.data
+            }
+            return Response(data, status=200)
 
 
 class AddSecurityAlert(APIView):
@@ -58,7 +62,6 @@ class AddSecurityAlert(APIView):
 
     def post(self, request):
         try:
-
             user = User.objects.get(email=request.user)
             permission = Permission.objects.get(codename='security_alert')
             user.user_permissions.add(permission)
@@ -68,9 +71,9 @@ class AddSecurityAlert(APIView):
             return Response(data, 200)
         except:
             return Response({"error": "user not found"}, 404)
+        
     def delete(self, request):
         try:
-
             user = User.objects.get(email=request.user)
             permission = Permission.objects.get(codename='security_alert')
             user.user_permissions.remove(permission)
@@ -86,7 +89,6 @@ class AccessNotification(APIView):
 
     def post(self, request):
         try:
-
             user = User.objects.get(email=request.user)
             permission = Permission.objects.get(codename='album_notification')
             user.user_permissions.add(permission)
@@ -99,7 +101,6 @@ class AccessNotification(APIView):
         
     def delete(self, request):
         try:
-
             user = User.objects.get(email=request.user)
             permission = Permission.objects.get(codename='album_notification')
             user.user_permissions.remove(permission)
@@ -117,7 +118,6 @@ class DownloadNotification(APIView):
 
     def post(self, request):
         try:
-
             user = User.objects.get(email=request.user)
             permission = Permission.objects.get(codename='download_notification')
             user.user_permissions.add(permission)

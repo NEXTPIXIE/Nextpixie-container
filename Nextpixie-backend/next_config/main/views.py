@@ -145,7 +145,7 @@ class CategoryAlbumView(APIView):
             album_data = UserAlbum.objects.create(category=obj, user=request.user, album_tag=generate_tag(), **album)
             
             data1 = {"message": "success", 
-                    "category": CategorySerializer(obj).data, 
+                    "category": CategorySerializer(obj).data,
                     "album":AlbumSerializer(album_data).data
                     }
             
