@@ -124,7 +124,7 @@ DATABASES = {
             'NAME': "nextpixie_database",
             'HOST': "database-3.cyfoixwej1m9.us-east-1.rds.amazonaws.com",
             'USER': "postgres",
-            'PASSWORD': os.getenv('db_password'),
+            'PASSWORD': "password123",
             'PORT': 5432,
 
         }
