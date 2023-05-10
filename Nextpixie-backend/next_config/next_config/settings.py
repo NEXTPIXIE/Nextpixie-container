@@ -35,7 +35,7 @@ CSRF_TRUSTED_ORIGINS = ['https://nextpixie-container-production.up.railway.app',
 
 
 CORS_ALLOWED_ORIGINS = [
-    "https://nextpixie-container-production.up.railway.app"
+    "https://nextpixie-container-production.up.railway.app",
     "http://localhost:4000",
     "http://127.0.0.1:8080"
 ]
