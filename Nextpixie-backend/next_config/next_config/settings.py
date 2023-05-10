@@ -29,12 +29,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("MYKEY")
 
 
-ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0:$PORT', 'localhost']
+ALLOWED_HOSTS = ['nextpixie-container-production.up.railway.app','127.0.0.1', '0.0.0.0:$PORT', 'localhost']
 
-CSRF_TRUSTED_ORIGINS = ['https://*.127.0.0.1', 'http://localhost']
+CSRF_TRUSTED_ORIGINS = ['https://nextpixie-container-production.up.railway.app', 'https://*.127.0.0.1', 'http://localhost']
 
 
 CORS_ALLOWED_ORIGINS = [
+    "https://nextpixie-container-production.up.railway.app"
     "http://localhost:4000",
     "http://127.0.0.1:8080"
 ]
