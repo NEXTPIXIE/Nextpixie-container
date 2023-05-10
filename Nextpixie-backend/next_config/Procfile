@@ -1,2 +1,1 @@
-web: gunicorn -b "0.0.0.0:$PORT" -w 3 next_config.wsgi
-release: python manage.py migrate
+web: gunicorn next_config.wsgi --log-file - 
