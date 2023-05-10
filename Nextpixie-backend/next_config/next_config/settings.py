@@ -123,8 +123,8 @@ DATABASES = {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': "nextpixie_database",
             'HOST': "database-3.cyfoixwej1m9.us-east-1.rds.amazonaws.com",
-            'USER': "password123",
-            'PASSWORD': os.getenv('db_password'),
+            'USER': "postgres",
+            'PASSWORD': "password123",
             'PORT': 5432,
 
         }
