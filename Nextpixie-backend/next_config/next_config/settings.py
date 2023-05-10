@@ -121,9 +121,9 @@ WSGI_APPLICATION = 'next_config.wsgi.application'
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('db_name'),
-            'HOST': os.getenv('db_host'),
-            'USER': os.getenv('db_user'),
+            'NAME': "nextpixie_database",
+            'HOST': "database-3.cyfoixwej1m9.us-east-1.rds.amazonaws.com",
+            'USER': "postgres",
             'PASSWORD': os.getenv('db_password'),
             'PORT': 5432,
 
