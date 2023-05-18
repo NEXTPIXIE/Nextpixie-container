@@ -28,7 +28,11 @@ export default function Button({
   px = "85px",
   loadingText = "Please wait . . .",
   py = "8px",
-  rounded= "8px"
+  rounded= "8px",
+  fontWeight,
+  pt,
+  pb,
+  className
 
 }) {
   const history = useNavigate();
