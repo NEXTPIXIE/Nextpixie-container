@@ -66,7 +66,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class UserOTP(models.Model):
     otp = models.IntegerField(null=True, blank=False)
-    timestamp = models.DateTimeField(timezone.now)
+    timestamp = models.DateTimeField(default=timezone.now)
 
 
 
