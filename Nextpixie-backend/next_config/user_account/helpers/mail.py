@@ -1,7 +1,7 @@
 import requests
 import os
 
-key = os.getenv("email_key")
+key = "sk_c6c183d79ed546b5ec82d3d29e7369dd33fcbbbecf638313"
 
 def signup_mail(email):
  
