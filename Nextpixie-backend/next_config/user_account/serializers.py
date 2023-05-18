@@ -57,9 +57,12 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 class OTPSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = UserOTP
-        fields = '__all__'
+        fields = [
+        'otp'
+        ]
 
 
 
