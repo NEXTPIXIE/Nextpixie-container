@@ -3,10 +3,12 @@ from django.utils import timezone
 
 
 def is_otp_expired(created_time: timezone) -> bool:
-    """OTP Validator"""
 
+    """OTP Validator"""
     current_time = timezone.now()
-    expiry_time = created_time + timedelta(seconds=300)
+    created_datetime = datetime.combine(current_time.date(), created_time)
+    
+    expiry_time = created_datetime + timedelta(seconds=300)
     if current_time < expiry_time:
         return True
     else:
