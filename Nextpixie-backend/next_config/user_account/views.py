@@ -8,7 +8,7 @@ from rest_framework.generics import ListAPIView
 from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
 from rest_framework import permissions, status
-from user_account.serializers import LoginSerializer, ChangePasswordSerializer, UserDetailSerializer, UserRegistrationSerializer, UserLogoutSerializer, OTPSerializer, OTPVerification, MailSerializer
+from user_account.serializers import LoginSerializer, ResetPasswordSerializer, ChangePasswordSerializer, UserDetailSerializer, UserRegistrationSerializer, UserLogoutSerializer, OTPSerializer, OTPVerification, MailSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.signals import user_logged_in
 from django.contrib.auth.models import User, Group
@@ -30,16 +30,15 @@ class OTPVerificationView(APIView):
         email = serializer.validated_data.pop('email')
         user_email = email
         user_otp = otp
-        
         try:
             user = User.objects.get(email=user_email['email'])
             user_otp_obj = get_object_or_404(UserOTP, otp=user_otp['otp'])
 
-           
+
             if not is_otp_expired(user_otp_obj.timestamp):
                 user_otp_obj.delete()
                 return Response({"error": "otp expired, request new otp"}, status=400)
-            
+
             if user.status == True:
                 user_otp.delete()
                 return Response({"error": "user already verified"}, status=400)
@@ -47,19 +46,33 @@ class OTPVerificationView(APIView):
                 user.status = True
                 user.save()
                 user_otp_obj.delete()
-
                 return Response({"message": "user email verified"}, status=200)
-            
+
         except Http404:
             return Response({"error": "invalid otp"}, status=400)
 
         except User.DoesNotExist:
             return Response({"error": "Invalid email address"}, status=400)
-         
+
+class ResetPassword(APIView):
+    def post(self, request):
+        serializer = ResetPasswordSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data['email']
+        password = serializer.validated_data['new_password']
+        try:
+            user = get_object_or_404(User, email=email)
+        except Http404:
+            return Response({"error": "user not found"}, status=404)
+        user.set_password(password)
+        user.save()
+
+        return Response({"message": "success, user password reset"}, status=200)
+
+
 class RequestOTP(APIView):
     def post(self, request):
         serializer = MailSerializer(data=request.data)
-
         serializer.is_valid(raise_exception=True)
         email = serializer.validated_data['email']
         otp_code = generate_code()
@@ -86,7 +99,7 @@ class UserRegisterView(APIView):
         data['last_name'] = account.last_name
 
         return Response(data)
-    
+
 class AddUserGroups(APIView):
     permission_classes = (IsAuthenticated,)
     def post(self, request):
@@ -102,14 +115,14 @@ class AddUserGroups(APIView):
 
 """
 Adding users to groups once the account is been created
-How tf do i create groups and add permissions seperately 
+How tf do i create groups and add permissions seperately
 
 """
 class AllUsersView(ListAPIView):
-    queryset = User.objects.all()
+    queryset = User.objects.filter(is_deleted=False)
     serializer_class = UserDetailSerializer
 
-    
+
 class ChangePasswordView(generics.GenericAPIView):
         """
         An endpoint for changing password.
@@ -149,11 +162,11 @@ class LogoutView(APIView):
         serializer.save()
 
         return Response({"Status": "Successfully logged out!"}, status=status.HTTP_204_NO_CONTENT)
-    
+
 
 
 class UserLoginView(APIView):
-    
+
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

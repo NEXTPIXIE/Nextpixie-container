@@ -57,14 +57,23 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 class OTPSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = UserOTP
-        fields = '__all__'
+        fields = [
+        'otp'
+        ]
 
 
 
 class MailSerializer(serializers.Serializer):
     email = serializers.CharField(required=True)
+
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    email = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
 
 
 

@@ -12,9 +12,9 @@ urlpatterns = [
     path('allow/users/download', views.UsersCanDownload.as_view()),
     path('allow/users/favorite', views.UsersFavorite.as_view()),
     path('allow/users/comment', views.UsersComment.as_view()),
-    path('allow/users/share', views.UsersSharing.as_view())
-    
-    
+    path('allow/users/share', views.UsersSharing.as_view()),
+    path('user/location', views.GetUserLocation.as_view())
+
 
 
 ] 

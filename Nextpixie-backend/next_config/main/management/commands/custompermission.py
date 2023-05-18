@@ -15,8 +15,6 @@ class Command(BaseCommand):
             group.permissions.add(permission)
 
 
-
-
         self.stdout.write('Group and permissions created')
 
 

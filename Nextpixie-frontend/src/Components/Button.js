@@ -23,17 +23,20 @@ export default function Button({
   href,
   mt,
   mb,
+  mx,
+  my,
   px = "85px",
   loadingText = "Please wait . . .",
   py = "8px",
   rounded= "8px"
+
 }) {
   const history = useNavigate();
 
   return (
     <ButtonBox
       fontSize={size === "xs" ? "xs" : size === "sm" ? "sm" : "16px"}
-      fontWeight={"700"}
+      fontWeight={fontWeight || "600"}
       color={color}
       bg={background}
       border={border}
@@ -48,6 +51,7 @@ export default function Button({
         color: hoverColor,
       }}
       rounded={rounded}
+
       size={size}
       as="button"
       onClick={() => {
@@ -60,10 +64,15 @@ export default function Button({
       w={w}
       px={px}
       py={py}
+      pt={pt || "0px"}
+      pb={pb || "0px"}
       leftIcon={leftIcon}
       rightIcon={rightIcon}
       mt={mt}
       mb={mb}
+      mx={mx || "0px"}
+      my={my || "0px"}
+      className={className || ""}
     >
       <Box as="a" href={href}>
         {children}
