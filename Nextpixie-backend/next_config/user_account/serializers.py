@@ -71,6 +71,12 @@ class MailSerializer(serializers.Serializer):
 
 
 
+class ResetPasswordSerializer(serializers.Serializer):
+    email = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+
+
+
 class OTPVerification(serializers.Serializer):
     otp = OTPSerializer()
     email = MailSerializer()

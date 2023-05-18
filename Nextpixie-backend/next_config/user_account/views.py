@@ -8,7 +8,7 @@ from rest_framework.generics import ListAPIView
 from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
 from rest_framework import permissions, status
-from user_account.serializers import LoginSerializer, ChangePasswordSerializer, UserDetailSerializer, UserRegistrationSerializer, UserLogoutSerializer, OTPSerializer, OTPVerification, MailSerializer
+from user_account.serializers import LoginSerializer, ResetPasswordSerializer, ChangePasswordSerializer, UserDetailSerializer, UserRegistrationSerializer, UserLogoutSerializer, OTPSerializer, OTPVerification, MailSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.signals import user_logged_in
 from django.contrib.auth.models import User, Group
@@ -53,6 +53,22 @@ class OTPVerificationView(APIView):
 
         except User.DoesNotExist:
             return Response({"error": "Invalid email address"}, status=400)
+
+class ResetPassword(APIView):
+    def post(self, request):
+        serializer = ResetPasswordSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data['email']
+        password = serializer.validated_data['new_password']
+        try:
+            user = get_object_or_404(User, email=email)
+        except Http404:
+            return Response({"error": "user not found"}, status=404)
+        user.set_password(password)
+        user.save()
+
+        return Response({"message": "success, user password reset"}, status=200)
+
 
 class RequestOTP(APIView):
     def post(self, request):
