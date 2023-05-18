@@ -13,6 +13,8 @@ export default function Button({
   disabled = false,
   full = false,
   background = "blue.blue100",
+  hoverColor = "#fff",
+  hoverBg = "blue.blue400",
   color = "#fff",
   border,
   w = "100%",
@@ -26,13 +28,8 @@ export default function Button({
   px = "85px",
   loadingText = "Please wait . . .",
   py = "8px",
-  pt,
-  pb,
-  className,
-  rounded,
-  fontWeight,
-  _hover,
-  _active,
+  rounded= "8px"
+
 }) {
   const history = useNavigate();
 
@@ -45,22 +42,16 @@ export default function Button({
       border={border}
       textTransform={"capitalize"}
       transition="0.5s"
-      _hover={
-        _hover || {
-          // bg: "blue.blue400",
-          color: "black",
-          bg: "transparent",
-          border: "1px solid #000",
-        }
-      }
-      _active={
-        _active || {
-          bg: "blue.blue400",
-          border: "1px solid #000",
-          color: "black",
-        }
-      }
-      rounded={rounded || "4px"}
+      _hover={{
+        bg: hoverBg,
+        color: hoverColor,
+      }}
+      _active={{
+        bg: hoverBg,
+        color: hoverColor,
+      }}
+      rounded={rounded}
+
       size={size}
       as="button"
       onClick={() => {
