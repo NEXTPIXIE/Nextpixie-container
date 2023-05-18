@@ -10,7 +10,7 @@ def is_otp_expired(created_time: timezone) -> bool:
     
     expiry_time = created_datetime + timedelta(seconds=300)
     if current_time < expiry_time:
-        return True
-    else:
         return False
+    else:
+        return True
 
