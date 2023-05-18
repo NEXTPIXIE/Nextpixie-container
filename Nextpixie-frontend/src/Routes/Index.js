@@ -9,6 +9,8 @@ import LandingPageLayout from "../Layouts/LandingPageLayout";
 import Features from "../Pages/Features";
 import Examples from "../Pages/Examples";
 import SignUp from "../Pages/AuthPages/SignUp";
+import SignIn from "../Pages/AuthPages/signIn";
+import EmailVerification from "../Pages/AuthPages/EmailVerification";
 
 export default function IndexRoutes() {
   return (
@@ -24,6 +26,8 @@ export default function IndexRoutes() {
         <Route path="/dashboard/analytics" element={<Analytics />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/email-verification" element={<EmailVerification />} />
       </Routes>
     </BrowserRouter>
   );

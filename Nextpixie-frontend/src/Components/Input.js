@@ -18,7 +18,7 @@ export default function Input({
   label = "",
   bColor = "#fff",
   isRequired = false,
-  type = "email",
+  type = "text",
   readOnly = false,
   helper = null,
   onChange = null,
@@ -39,17 +39,10 @@ export default function Input({
 
   const [inputType, setInputType] = useState(type);
 
-  const switchEye = ()=>{
-    
-      if (inputType === "password") {
-        setInputType("text");
-      } else {
-        setInputType("password");
-      }
-    }
+  
   
 useEffect(() => {
-  switchEye()
+  
 }, [])
   return (
     <FormControl
@@ -130,7 +123,13 @@ useEffect(() => {
               )
             }
             cursor={"pointer"}
-            onClick={switchEye}
+            onClick={() => {
+                if (inputType === 'password') {
+                  setInputType('text');
+                } else {
+                  setInputType('password');
+                }
+              }}
           />
         )}
       </InputGroup>
