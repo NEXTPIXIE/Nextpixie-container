@@ -40,7 +40,7 @@ class OTPVerificationView(APIView):
                 return Response({"error": "otp expired, request new otp"}, status=400)
 
             if user.status == True:
-                user_otp.delete()
+                user_otp_obj.delete()
                 return Response({"error": "user already verified"}, status=400)
             else:
                 user.status = True
