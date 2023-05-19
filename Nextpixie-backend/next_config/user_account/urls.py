@@ -19,6 +19,7 @@ urlpatterns = [
     path('user/groups', views.AddUserGroups.as_view()),
     path('verify/otp', views.OTPVerificationView.as_view()),
     path('request/otp', views.RequestOTP.as_view()),
-    path('reset/password', views.ResetPassword.as_view())
+    path('reset/password', views.ResetPassword.as_view()),
+    path('user/actions/<str:pk>', views.UserActions.as_view())
 
 ]

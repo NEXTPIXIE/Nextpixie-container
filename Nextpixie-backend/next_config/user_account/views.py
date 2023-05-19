@@ -216,3 +216,8 @@ class UserLoginView(APIView):
                 'errors': 'The account is not active'
                 }
             return Response(data, status=status.HTTP_403_FORBIDDEN)
+
+
+class UserActions(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = UserDetailSerializer
+    queryset = User.objects.all()
