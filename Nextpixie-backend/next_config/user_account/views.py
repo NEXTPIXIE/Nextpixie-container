@@ -172,7 +172,7 @@ class UserLoginView(APIView):
         serializer.is_valid(raise_exception=True)
         user = authenticate(request, email = serializer.validated_data['email'], password = serializer.validated_data['password'])
         if user and user.is_active:
-            if user.is_staff:
+            if user.status:
                 try:
                     refresh = RefreshToken.for_user(user)
                     user_details = {}
