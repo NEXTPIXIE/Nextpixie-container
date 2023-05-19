@@ -6,6 +6,7 @@ import Input from '../../Components/Input'
 import Button from '../../Components/Button'
 import { FcGoogle } from 'react-icons/fc';
 import { useNavigate } from 'react-router-dom'
+import { SignUpApi } from '../../Utils/ApiCall'
 
 export default function SignUp() {
     const [Loading, setLoading] = useState(false);
@@ -27,15 +28,53 @@ export default function SignUp() {
         })
     }
 
-    const signUpBtn = ()=>{
+    const signUpBtn = async ()=>{
         setLoading(true)
-        
-        setTimeout(() => {
-            
+
+
+        try {
+            setLoading(true)
+            let result = await SignUpApi(Payload);
+            console.log("result", result);
+            if (result.status  === 200) {
+                setLoading(false)
+                localStorage.setItem("newEmail", Payload.email)
+                setPayload({
+                    first_name: "",
+                    last_name: "",
+                    business_name: "",
+                    email: "",
+                    password: "",
+                    confirm_password: ""
+                })
+
+                nav("/email-verification")
+
+
+    
+            } else {
+
+                setLoading(false)  
+
+            }
+
+
+        } catch (e) {
+
             setLoading(false)
-            nav("/email-verification")
-        }, 3000);
+           
+            console.error('Error:', e.message);
+        }
+
+
+
+        
+        
     }
+
+    
+    
+
 
 
     return (
