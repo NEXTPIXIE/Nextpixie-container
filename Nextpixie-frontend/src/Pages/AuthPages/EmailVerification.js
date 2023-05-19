@@ -6,15 +6,21 @@ import Input from '../../Components/Input'
 import Button from '../../Components/Button'
 import { FcGoogle } from 'react-icons/fc';
 import { useNavigate } from 'react-router-dom'
+import { ResendOtp, VerifyEmail } from '../../Utils/ApiCall'
 
 export default function EmailVerification() {
     const [Loading, setLoading] = useState(false);
+    const [ResendLoading, setResendLoading] = useState(false);
     const [Payload, setPayload] = useState({
        
         otp: "",
-        email: "",
+        email: localStorage.getItem("newEmail"),
         
     });
+
+    
+
+    
 
     const nav = useNavigate() 
 
@@ -28,17 +34,68 @@ export default function EmailVerification() {
         })
     }
 
-    const Proceed = ()=>{
-        setLoading(true)
+    const Proceed = async()=>{
+     
         
-        setTimeout(() => {
-            
+        try {
+            setLoading(true)
+            let result = await VerifyEmail({ 
+                otp: {
+                    otp: Payload.otp,                      
+                },
+                email: {
+                    email: Payload.email ||"lordsoliz@gmail.com"
+                } 
+            });
+
+            console.log("result", result.response);
+
+            if (result.status  === 200) {
+                setLoading(false)
+                localStorage.clear("newEmail")
+                alert("Email verified successfully")
+                nav("/sign-in")
+                
+            } else {
+                alert(result.response)
+
+                setLoading(false)  
+
+            }
+
+
+        } catch (e) {
+
             setLoading(false)
-        }, 3000);
+           
+            console.error('Error:', e.message);
+        }
     }
 
-    const resendOtp  =()=>{
+    const resendOtp  =async ()=>{
+        try {
+            setResendLoading(true)
+            let result = await ResendOtp({ email: Payload.email ||"lordsoliz@gmail.com"});
+            console.log("result", result);
+            if (result.status  === 200) {
+                setResendLoading(false)
+                localStorage.clear("newEmail")
+                alert("An Otp has been sent successful")
+              
 
+            } else {
+
+                setResendLoading(false)  
+
+            }
+
+
+        } catch (e) {
+
+            setLoading(false)
+           
+            console.error('Error:', e.message);
+        }
     }
 
 
@@ -67,7 +124,7 @@ export default function EmailVerification() {
                 </Stack>
 
                 <Text display={"flex"} justifyContent={"flex-end"} fontWeight={"400"} fontSize={"16px"} textAlign={"center"} mt="32px" color={"gray.gray600"}>Didn’t get an OTP Code? 
-                <Box as="span" pl="5px" color={"blue.blue100"} cursor={"pointer"} fontWeight={"700"} onClick={resendOtp}> Resend </Box></Text>
+                <Box as="span" pl="5px" color={"blue.blue100"} cursor={"pointer"} fontWeight={"700"} onClick={resendOtp}>{ResendLoading ? "Please wait..." : "Resend"}</Box></Text>
 
 
                 <Button 

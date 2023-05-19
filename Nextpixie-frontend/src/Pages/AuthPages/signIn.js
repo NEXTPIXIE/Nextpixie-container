@@ -6,6 +6,7 @@ import Input from '../../Components/Input'
 import Button from '../../Components/Button'
 import { FcGoogle } from 'react-icons/fc';
 import { useNavigate } from 'react-router-dom'
+import { Login } from '../../Utils/ApiCall'
 
 export default function SignIn() {
     const [Loading, setLoading] = useState(false);
@@ -14,6 +15,8 @@ export default function SignIn() {
         email: "",
         password: "",
     });
+
+    
 
     const nav = useNavigate() 
 
@@ -27,13 +30,32 @@ export default function SignIn() {
         })
     }
 
-    const LoginBtn = ()=>{
-        setLoading(true)
+    const LoginBtn =async ()=>{
+       
+            try {
+                setLoading(true)
+                let result = await Login(Payload);
+                console.log("result", result);
+                if (result.status  === 200) {
+                    setLoading(false)
+                    localStorage.setItem("LoginUser", JSON.stringify(result.data.data))
+                    nav("/dashboard/gallery")
+                    alert("Login successful")
+                  
+                } else {
+    
+                    setLoading(false)  
+    
+                }
+    
+    
+            } catch (e) {
+    
+                setLoading(false)
+               
+                console.error('Error:', e.message);
+            }
         
-        setTimeout(() => {
-            
-            setLoading(false)
-        }, 3000);
     }
 
 
