@@ -41,7 +41,7 @@ if ENVIRONMENT.title() == "Development":
 
 else:
     
-    ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
+    ALLOWED_HOSTS = ['https://nextpixie-container-production.up.railway.app']
     DEBUG = True
     
     CORS_ALLOW_ALL_ORIGIN = True
