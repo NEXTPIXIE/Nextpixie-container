@@ -8,101 +8,52 @@ from rest_framework.generics import ListAPIView
 from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
 from rest_framework import permissions, status
-from user_account.serializers import LoginSerializer, ResetPasswordSerializer, ChangePasswordSerializer, UserDetailSerializer, UserRegistrationSerializer, UserLogoutSerializer, OTPSerializer, OTPVerification, MailSerializer
+from user_account.serializers import LoginSerializer, ChangePasswordSerializer, OTPVerificationSerializer, EmailSerializer, UserDetailSerializer, UserRegistrationSerializer, UserLogoutSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.signals import user_logged_in
 from django.contrib.auth.models import User, Group
 from .helpers.mail import signup_mail, send_otp_mail
-from .helpers.functions import is_otp_expired
+from django.db import IntegrityError
 from main.helpers.generators import generate_code
-from .models import UserOTP
+from django.utils import timezone
+from .models import UserOtp
 from django.shortcuts import get_object_or_404
 from django.http import Http404
+
+
 User = get_user_model()
 
-class OTPVerificationView(APIView):
-
-    def post(self, request):
-        serializer = OTPVerification(data=request.data)
-
-        serializer.is_valid(raise_exception=True)
-        otp = serializer.validated_data.pop('otp')
-        email = serializer.validated_data.pop('email')
-        user_email = email
-        user_otp = otp
-        try:
-            user = User.objects.get(email=user_email['email'])
-            user_otp_obj = get_object_or_404(UserOTP, otp=user_otp['otp'])
 
 
-            if not is_otp_expired(user_otp_obj.timestamp):
-                user_otp_obj.delete()
-                return Response({"error": "otp expired, request new otp"}, status=400)
-
-            if user.status == True:
-                user_otp_obj.delete()
-                return Response({"error": "user already verified"}, status=400)
-            else:
-                user.status = True
-                user.save()
-                user_otp_obj.delete()
-                return Response({"message": "user email verified"}, status=200)
-
-        except Http404:
-            return Response({"error": "invalid otp"}, status=400)
-
-        except User.DoesNotExist:
-            return Response({"error": "Invalid email address"}, status=400)
-
-class ResetPassword(APIView):
-    def post(self, request):
-        serializer = ResetPasswordSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        email = serializer.validated_data['email']
-        password = serializer.validated_data['new_password']
-        try:
-            user = get_object_or_404(User, email=email)
-        except Http404:
-            return Response({"error": "user not found"}, status=404)
-        user.set_password(password)
-        user.save()
-
-        return Response({"message": "success, user password reset"}, status=200)
-
-
-class RequestOTP(APIView):
-    def post(self, request):
-        serializer = MailSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        email = serializer.validated_data['email']
-        otp_code = generate_code()
-        send_otp_mail(email, otp_code)
-        UserOTP.objects.create(otp=otp_code)
-        data = {
-            "message": "new otp as been sent",
-            "email": email
-        }
-        return Response(data, status=200)
 
 class UserRegisterView(APIView):
+    
     def post(self, request):
         serializer = UserRegistrationSerializer(data=request.data)
         data = {}
-        serializer.is_valid(raise_exception=True)
-        account = serializer.save()
-        otp_code = generate_code()
-        send_otp_mail(account.email, otp_code)
-        UserOTP.objects.create(otp=otp_code)
+        try:
+            serializer.is_valid(raise_exception=True)
+            account = serializer.save()
+        except IntegrityError as e:
+            data['response'] = 'error registering a new user.'
+            data['error'] = str(e)
+            return Response(data, status=400)
         data['response'] = 'successfully registered a new user.'
-        data['email'] = account.email
+        data['id'] = account.id
         data['first_name'] = account.first_name
         data['last_name'] = account.last_name
+        data['phone'] = account.phone
+        data['email'] = account.email
+        data['location'] = account.location
 
         return Response(data)
 
+
 class AddUserGroups(APIView):
     permission_classes = (IsAuthenticated,)
+
     def post(self, request):
+
         user = User.objects.get(email=request.user)
         group = Group.objects.get(id=1)
         user.groups.add(group)
@@ -113,11 +64,6 @@ class AddUserGroups(APIView):
 
         return Response(data, 201)
 
-"""
-Adding users to groups once the account is been created
-How tf do i create groups and add permissions seperately
-
-"""
 class AllUsersView(ListAPIView):
     queryset = User.objects.filter(is_deleted=False)
     serializer_class = UserDetailSerializer
@@ -221,3 +167,61 @@ class UserLoginView(APIView):
 class UserActions(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserDetailSerializer
     queryset = User.objects.all()
+
+
+
+
+class RequestOtpMail(APIView):
+    def post(self, request):
+        serializer = EmailSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data['email']
+        try:
+            user = get_object_or_404(User, email=email)
+        except Http404:
+            return Response({"error": "user not found"}, status=404)
+        
+        otp = generate_code()
+        expiry_date = timezone.now() + timezone.timedelta(minutes=5)
+
+        UserOtp.objects.create(user=user, otp=otp, expiry_date=expiry_date)
+
+        send_otp_mail(email=email, first_name=user.first_name, otp=otp)
+
+        return Response({"message": "otp request successful", "otp": otp}, status=200)
+
+class VerifyOtp(APIView):
+
+    def post(self, request):
+
+        serializer = OTPVerificationSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            otp = serializer.validated_data['otp']
+            try:
+                obj = UserOtp.objects.get(otp=otp)
+            except UserOtp.DoesNotExist:
+                return Response({"error": "Invalid Otp"}, status=400)
+            if obj.is_valid():
+                obj.delete()
+                return Response({"message": "success"}, status=200)
+            else:
+                obj.delete()
+                return Response({"error": "otp expired, request new otp"}, status=400)
+
+
+class UserVerificationView(APIView):
+    def post(self, request):
+        serializer = OTPVerificationSerializer(data=request.data)
+
+        if serializer.is_valid():
+            data = serializer.user_verification_otp(request)
+            return Response(data, status=200)
+        
+        else:
+            return Response(serializer.errors, status=400)
+
+class AllUsers(generics.ListAPIView):
+    serializer_class = UserDetailSerializer
+    queryset = User.objects.filter(is_deleted=False)
+
+
