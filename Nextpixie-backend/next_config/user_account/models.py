@@ -6,6 +6,7 @@ from django.contrib.auth.models import Group
 from django.utils.translation import gettext_lazy as _
 from .managers import UserManager
 from django.utils import timezone
+import random
 
 import uuid
 
@@ -41,6 +42,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
     
+    def delete(self):
+        self.is_deleted=True
+        self.email = f"{random.randint}-deleted-{self.email}"
+        self.is_active = False
+        self.status = False
+        self.save()
+
 
 
 
@@ -64,9 +72,20 @@ class User(AbstractBaseUser, PermissionsMixin):
             
         ]
 
-class UserOTP(models.Model):
-    otp = models.IntegerField(null=True, blank=False)
-    timestamp = models.DateTimeField(default=timezone.now)
+
+
+
+class UserOtp(models.Model):
+    user  =models.ForeignKey('user_account.User', on_delete=models.CASCADE)
+    otp = models.CharField(max_length=6)
+    expiry_date = models.DateTimeField()
+    
+    
+    def is_valid(self):
+        return bool(self.expiry_date > timezone.now())
+    
+    def delete(self):
+        super().delete()
 
 
 

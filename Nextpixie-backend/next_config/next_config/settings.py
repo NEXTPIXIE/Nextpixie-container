@@ -16,29 +16,87 @@ from dotenv import load_dotenv, find_dotenv
 from django.utils.timezone import timedelta
 import os
 
-
 load_dotenv(find_dotenv())
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+
+ENVIRONMENT=os.getenv("ENVIRONMENT", "Development")
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
+SECRET_KEY = os.getenv("SECRET_KEY")
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("MYKEY")
+if ENVIRONMENT.title() == "Development":
+    
+    ALLOWED_HOSTS = []
 
+    DEBUG = True
 
-ALLOWED_HOSTS = ['nextpixie-container-production.up.railway.app', '127.0.0.1', '0.0.0.0:$PORT', 'localhost']
+    DATABASES = {
+        'default' : {
+            'ENGINE' : 'django.db.backends.sqlite3',
+            'NAME' : BASE_DIR/ 'db.sqlite3'
+        }
+    }
+    
 
-CSRF_TRUSTED_ORIGINS = ['https://nextpixie-container-production.up.railway.app', 'https://*.127.0.0.1', 'http://localhost']
+else:
+    
+    ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS")
+    DEBUG = True
+    
+    CORS_ALLOW_ALL_ORIGIN = True
+    CORS_ORIGIN_ALLOW_ALL = True
+    CORS_ALLOW_ALL_ORIGINS = True
+    CORS_ALLOW_CREDENTIALS = True
+    
+        
+    
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv("db_name"),
+            'HOST': os.getenv("db_host"),
+            'USER': os.getenv("db_user"),
+            'PASSWORD': os.getenv("db_password"),
+            'PORT': os.getenv("db_port")
 
-
-CORS_ALLOWED_ORIGINS = [
-    "https://nextpixie-container-production.up.railway.app",
-    "http://localhost:4000",
-    "http://127.0.0.1:8080"
-]
+        }
+    }
+    
+    
+    # LOGGING = {
+    #     'version': 1,
+    #     'disable_existing_loggers': False,
+    #     'handlers': {
+    #         'file': {
+    #             'level': 'DEBUG',
+    #             'class': 'logging.FileHandler',
+    #             'filename': os.path.join(BASE_DIR, 'resolute.log'),
+    #         },
+    #     },
+    #     'loggers': {
+    #         'django': {
+    #             'handlers': ['file'],
+    #             'level': 'DEBUG',
+    #             'propagate': True,
+    #         },
+    #     },
+    # }
+    
+    SESSION_COOKIE_SECURE = False
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_REDIRECT_EXEMPT = []
+    SECURE_SSL_HOST = None
+    SECURE_SSL_REDIRECT = False
+    SECURE_PROXY_SSL_HEADER =(
+        ('HTTP_X_FORWARDED_PROTO', 'https')
+    )
+    CSRF_COOKIE_SECURE=False
+    
+    
 
 CORS_ALLOW_ALL_ORIGIN = True
 CORS_ALLOW_HEADERS = [
@@ -52,12 +110,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
-# SECURITY WARNING: don't run with debug turned on in production
-#okay got it
-
-
-DEBUG = True
-
 
 # Application definition
 
@@ -69,12 +121,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'whitenoise.runserver_nostatic',
+
+
+
+    #third_party apps
     'django_user_agents',
     'cloudinary_storage',
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'djoser',
+
+
+    #local apps
     'user_account',
     'main',
     'socialauth',
@@ -115,20 +174,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'next_config.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': "nextpixie_database",
-            'HOST': "database-3.cyfoixwej1m9.us-east-1.rds.amazonaws.com",
-            'USER': "postgres",
-            'PASSWORD': "password123",
-            'PORT': 5432,
-
-        }
-    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
