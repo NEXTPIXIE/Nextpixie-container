@@ -41,7 +41,7 @@ if ENVIRONMENT.title() == "Development":
 
 else:
     
-    ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS")
+    ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
     DEBUG = True
     
     CORS_ALLOW_ALL_ORIGIN = True
