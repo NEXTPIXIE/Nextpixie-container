@@ -17,6 +17,9 @@ urlpatterns = [
     path('token/verify', TokenVerifyView.as_view(), name='token_verify'),
     path('djoser/', include('djoser.urls')),
     path('user/groups', views.AddUserGroups.as_view()),
-    path('user/actions/<str:pk>', views.UserActions.as_view())
+    path('user/actions/<str:pk>', views.UserActions.as_view()),
+    path('user/verification/otp', views.UserVerificationView.as_view()),
+    path('request/otp', views.RequestOtpMail.as_view()),
+    path('verify/otp', views.VerifyOtp.as_view())
 
 ]

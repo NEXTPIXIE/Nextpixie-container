@@ -46,7 +46,7 @@ class OTPVerificationSerializer(serializers.Serializer):
             if otp.is_valid():
                 if otp.user.is_active == False:
                     otp.user.is_active=True
-                    otp.user.is_verified=True
+                    otp.user.status=True
                     otp.user.save()
 
                     otp.delete()

@@ -24,7 +24,14 @@ from django.http import Http404
 User = get_user_model()
 
 
-
+class Welcome(APIView):
+    def get(self, request):
+        data = {
+            "status": 200,
+            "message": "Welcome to Nextpixie Backend"
+        }
+        return Response(data, status=200)
+    
 
 class UserRegisterView(APIView):
     
@@ -42,9 +49,7 @@ class UserRegisterView(APIView):
         data['id'] = account.id
         data['first_name'] = account.first_name
         data['last_name'] = account.last_name
-        data['phone'] = account.phone
         data['email'] = account.email
-        data['location'] = account.location
 
         return Response(data)
 
@@ -135,25 +140,7 @@ class UserLoginView(APIView):
                         'data' : user_details,
                     }
                     return Response(data, status=status.HTTP_200_OK)
-                except Exception as e:
-                    raise e
-            else:
-                try:
-                    refresh = RefreshToken.for_user(user)
-                    user_details = {}
-                    user_details['id'] = user.id
-                    user_details['email'] = user.email
-                    user_details['role'] = user.role
-                    user_details['access_token'] = str(refresh.access_token)
-                    user_details['refresh_token'] = str(refresh)
-                    user_logged_in.send(sender=user.__class__,
-                                        request=request, user=user)
-
-                    data = {
-                        'message' : "User Login successful",
-                        'data' : user_details,
-                    }
-                    return Response(data, status=status.HTTP_200_OK)
+                
                 except Exception as e:
                     raise e
         else:
@@ -219,6 +206,8 @@ class UserVerificationView(APIView):
         
         else:
             return Response(serializer.errors, status=400)
+
+
 
 class AllUsers(generics.ListAPIView):
     serializer_class = UserDetailSerializer
