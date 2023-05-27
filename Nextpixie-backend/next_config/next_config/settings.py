@@ -41,7 +41,7 @@ if ENVIRONMENT.title() == "Development":
 
 else:
     
-    ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
+    ALLOWED_HOSTS = ['nextpixie-container-production.up.railway.app']
     DEBUG = True
     
     CORS_ALLOW_ALL_ORIGIN = True
@@ -238,9 +238,13 @@ SIMPLE_JWT = {
 
 
 
-
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": ['rest_framework_simplejwt.authentication.JWTAuthentication'],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
+        ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer'
+    ]
 }
 
 AUTHENTICATION_BACKEND = ['django.contrib.auth.backends.ModelBackend']

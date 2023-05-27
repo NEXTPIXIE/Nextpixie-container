@@ -25,7 +25,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     password      = models.CharField(_('password'), max_length=300)
     is_staff      = models.BooleanField(_('staff'), default=False)
     is_admin      = models.BooleanField(_('admin'), default= False)
-    is_active     = models.BooleanField(_('active'), default=True)
+    is_active     = models.BooleanField(_('active'), default=False)
     is_deleted    = models.BooleanField(_('deleted'), default=False) 
     date_joined   = models.DateTimeField(_('date joined'), auto_now_add=True)
     client_provider = models.CharField(_('client_provider'), max_length=200, default='self_auth', null=True)

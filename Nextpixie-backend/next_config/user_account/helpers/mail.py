@@ -1,11 +1,11 @@
 import requests
 import os
 
-key = "sk_c6c183d79ed546b5ec82d3d29e7369dd33fcbbbecf638313"
+key = os.getenv("email_key")
 
 def signup_mail(email):
  
-    requests.post(
+    mail = requests.post(
         "https://api.useplunk.com/v1/track",
         headers={
             "Content-Type": "application/json",
@@ -18,10 +18,12 @@ def signup_mail(email):
         
     )
 
+    return mail
 
-def send_otp_mail(first_name, email, otp_code):
 
-    requests.post(
+def send_otp_mail(first_name, email, otp):
+
+    mail = requests.post(
         "https://api.useplunk.com/v1/track",
         headers={
             "Content-Type": "application/json",
@@ -31,8 +33,10 @@ def send_otp_mail(first_name, email, otp_code):
             "event": "otp_mail",
             "email": email,
             "data": {
-                "otp": otp_code,
+                "otp": otp,
                 "first_name": first_name
             }
         },
     )
+
+    return mail
