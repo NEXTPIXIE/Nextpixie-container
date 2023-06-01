@@ -24,3 +24,5 @@ def encode_file(image):
     content = image.read()
     encoded_content = base64.b64encode(content)
     return encoded_content.decode('utf-8')
+
+

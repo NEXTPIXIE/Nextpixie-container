@@ -17,7 +17,6 @@ User = get_user_model()
 
 @receiver(post_save, sender=User)
 def send_welcome_mail(instance, created, **kwargs):
-    print("here I am")
     if created:
         if instance.role == 'basic user':
             otp = generate_code()
