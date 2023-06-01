@@ -161,7 +161,3 @@ class CategoryAlbumView(APIView):
 
     # def put(self, request):
 
-
-
-
-

@@ -19,7 +19,7 @@ import os
 load_dotenv(find_dotenv())
 
 
-ENVIRONMENT=os.getenv("ENVIRONMENT", "Development")
+ENVIRONMENT=os.getenv("ENVIRONMENT")
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -143,8 +143,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django_user_agents.middleware.UserAgentMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
