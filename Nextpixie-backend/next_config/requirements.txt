@@ -8,7 +8,7 @@ coreapi==2.3.3
 coreschema==0.0.4
 cryptography==39.0.2
 defusedxml==0.7.1
-Django==4.1.9
+Django==4.1.10
 django-cloudinary-storage==0.3.0
 django-cors-headers==3.14.0
 django-templated-mail==1.1.1
