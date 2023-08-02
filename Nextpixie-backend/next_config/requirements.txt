@@ -6,7 +6,7 @@ charset-normalizer==3.1.0
 cloudinary==1.32.0
 coreapi==2.3.3
 coreschema==0.0.4
-cryptography==39.0.2
+cryptography==41.0.3
 defusedxml==0.7.1
 Django==4.1.9
 django-cloudinary-storage==0.3.0
